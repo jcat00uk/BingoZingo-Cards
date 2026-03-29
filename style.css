@@ -1,0 +1,1851 @@
+/* ===========================
+   1. GENERAL STYLES
+=========================== */
+
+/* Body: sets default font and page margin */
+body {
+  font-family: Arial, sans-serif;
+  margin: 10px;
+  padding-top: env(safe-area-inset-top);
+}
+
+/* Headings h2: left-align with small bottom margin */
+h2 {
+  text-align: left;
+  margin-bottom: 4px;
+}
+
+
+/* ===========================
+   2. HEADER SECTION
+=========================== */
+
+/* Header row container: flex layout for title + bingo call */
+.header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+/* Title text: static size, does not shrink */
+.title-text {
+  font-size: clamp(1.2rem, 5vw, 2rem);
+  line-height: 1.2;
+  margin: 0;
+  flex-shrink: 0;
+  text-shadow: 0 0 8px #ff6666, 0 0 16px #ff0000;
+}
+
+
+/* ===========================
+   3. BINGO CALL TEXT (UK STYLE)
+=========================== */
+
+/* Main call text wrapper */
+#bingoCallText {
+  flex-grow: 1;
+  flex-shrink: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  overflow: hidden;
+  color: red;
+}
+
+/* Inner call text box */
+.call-text-box {
+  font-size: clamp(0.75rem, 3.5vw, 1.4rem);
+  line-height: 1.2;
+  max-height: 2.4em;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  text-align: right;
+  word-break: break-word;
+}
+
+/* Responsive call text */
+
+
+
+/* ===========================
+   4. LAST CALLED NUMBER DISPLAY
+=========================== */
+
+/* Big last number bubble */
+#bigLastNumber {
+  width: 60px;
+  height: 60px;
+  font-size: 36px;
+  font-weight: bold;
+  color: red;
+  background-color: yellow;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  box-shadow: 0 0 8px rgba(255, 200, 0, 0.6);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Animation trigger for new number call */
+#bigLastNumber.new-call {
+  animation: popNumber 0.5s ease;
+}
+
+/* Pop animation keyframes */
+@keyframes popNumber {
+  0%   { transform: scale(1);   box-shadow: 0 0 8px rgba(255, 200, 0, 0.6); }
+  50%  { transform: scale(1.4); box-shadow: 0 0 16px rgba(255, 200, 0, 0.9); }
+  100% { transform: scale(1);   box-shadow: 0 0 8px rgba(255, 200, 0, 0.6); }
+}
+
+/* Grid bottom text container */
+.grid-bottom-text {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+/* ===========================
+   5. REMAINING NUMBERS
+=========================== */
+
+#remainingNumbers {
+  text-align: right;
+  font-weight: bold;
+  font-size: 18px;
+  color: red;
+  margin: 8px 0;
+}
+
+
+/* ===========================
+   6. WIN TEXT
+=========================== */
+
+#winText {
+  text-align: left;
+  font-style: italic;
+  font-weight: bold;
+  font-size: 14px;
+  color: red;
+  margin: 8px 0;
+}
+
+
+/* ===========================
+   7. CALLED NUMBERS STRIP
+=========================== */
+
+/* Outer wrapper for horizontal strip */
+#calledNumbersContainerWrapper {
+  width: 100%;
+  max-width: 540px;
+  margin: 0 auto 6px auto;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  padding: 4px 0;
+  background-color: #eee;
+  overflow-x: hidden;
+  cursor: grab;
+  -webkit-user-select: none;
+  user-select: none;
+  min-height: 46px;
+}
+
+/* Change cursor while actively dragging */
+#calledNumbersContainerWrapper:active {
+  cursor: grabbing;
+}
+
+/* Inner container flex layout */
+#calledNumbersContainer {
+  display: flex;
+  gap: 6px;
+  min-width: 100%;
+}
+
+/* Individual number bubble */
+#calledNumbersContainer span {
+  flex: 0 0 auto;
+  min-width: 36px;
+  height: 36px;
+  text-align: center;
+  font-size: 16px;
+  background: #ddd;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Last called number bubble */
+#calledNumbersContainer span#lastNumber {
+  font-weight: bold;
+  color: red;
+  background: #ffe6e6;
+  border: 1px solid red;
+}
+
+
+/* ===========================
+   8. BINGO GRID
+=========================== */
+
+#bingoGrid {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  gap: 6px;
+  margin: 0 auto;
+  max-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Individual grid cell */
+.grid-cell {
+  aspect-ratio: 1 / 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #000;
+  font-weight: bold;
+  font-size: 18px;
+  background-color: #eee;
+  border-radius: 50%;
+  transition: background 0.3s, transform 0.3s;
+}
+
+/* Mobile tweaks */
+@media (max-width: 480px) {
+  #bingoGrid { max-width: 320px; gap: 4px; }
+  .grid-cell { font-size: 14px; }
+  .modal-content { max-width: 95%; padding: 8px; }
+  #calledNumbersContainerWrapper,
+  .top-section,
+  .grid-bottom-buttons { max-width: 320px; }
+}
+
+/* Called cell */
+.grid-cell.called { background-color: #ff6666; color: #fff; }
+
+/* Card-match highlight — numbers on the selected/winning card turn yellow */
+.grid-cell.card-match { background-color: #f5c842 !important; color: #000 !important; }
+body.night-mode .grid-cell.card-match { background-color: #e6b800 !important; color: #000 !important; }
+
+/* Last called cell */
+.grid-cell.lastCalled {
+  background-color: #3399ff !important;
+  color: #fff;
+  animation: pulse 0.6s ease-in-out;
+}
+
+@keyframes pulse {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+
+/* ===========================
+   9. BUTTONS — BASE STYLES
+=========================== */
+
+/* Base styles shared by all buttons */
+.main-btn {
+  padding: 10px 16px;
+  font-size: 14px;
+  border-radius: 8px;
+  background-color: #555;
+  color: #fff;
+  border: none;
+}
+
+.icon-btn {
+  padding: 0 10px;
+  min-width: 40px;
+  font-size: 16px;
+  border-radius: 8px;
+  background-color: #555;
+  color: #fff;
+  border: none;
+  text-align: center;
+  user-select: none;
+}
+
+/* Generic button cursor and transition */
+button {
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+
+/* Disabled state — scoped to specific classes to avoid blocking overrides elsewhere */
+/* FIX 14: Removed !important so specific buttons can override if needed */
+.main-btn:disabled,
+.icon-btn:disabled,
+button:disabled {
+  background-color: #888;
+  color: #555;
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+
+/* ===========================
+   10. BUTTON GLOWS & ACTIVE FEEDBACK
+=========================== */
+
+/* Glow pulse animation */
+@keyframes glowPulse {
+  0%   { box-shadow: 0 0 5px #ff0000;  transform: scale(1); }
+  50%  { box-shadow: 0 0 15px #ff4444; transform: scale(1.05); }
+  100% { box-shadow: 0 0 5px #ff0000;  transform: scale(1); }
+}
+
+/* Start/Next buttons: red + glow when enabled */
+#startGameBtn,
+#nextNumberBtn {
+  color: #fff;
+  border: none;
+  transition: background-color 0.3s;
+}
+
+#startGameBtn.enabled-glow,
+#nextNumberBtn.enabled-glow,
+.main-btn.enabled-glow {
+  background-color: red;
+  animation: glowPulse 1s infinite ease-in-out;
+}
+
+/* FIX 1 + FIX 5: Consolidated all active-state rules into one place.
+   Scoped to .main-btn only — icon/toggle buttons no longer flash limegreen.
+   The :not(:disabled) guard ensures disabled buttons get no feedback. */
+.main-btn:active:not(:disabled) {
+  transform: scale(0.95);
+  transition: transform 0.1s;
+  background-color: limegreen;
+}
+
+.icon-btn:active:not(:disabled) {
+  transform: scale(0.95);
+  transition: transform 0.1s;
+  /* No background change — icon buttons keep their own color on press */
+}
+
+/* Prevent long-press menu on iOS */
+button, .main-btn, .icon-btn {
+  -webkit-touch-callout: none;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+
+/* ===========================
+   11. CHECK CARD DISPLAY
+=========================== */
+
+.card { border: 2px dashed #000; padding: 6px; margin: 10px auto; max-width: 320px; }
+.card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+.card-header h4 { margin: 0; }
+.card-header .card-result { font-weight: bold; font-size: 16px; }
+.card table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+.card td { border: 1px solid #000; height: 28px; text-align: center; font-size: 16px; }
+.card td.called { color: red; font-weight: bold; }
+.card td.lastCalled { color: blue; font-weight: bold; }
+
+
+/* ===========================
+   12. NIGHT MODE
+=========================== */
+
+/* Base night mode body */
+body.night-mode {
+  background-color: #121212;
+  color: #eee;
+}
+
+body.night-mode h2 { color: #eee; }
+
+/* Buttons in night mode */
+body.night-mode .main-btn,
+body.night-mode .icon-btn,
+body.night-mode #nextNumberBtn,
+body.night-mode #undoNumberBtn,
+body.night-mode #checkSelectedCardBtn {
+  background-color: #444;
+  color: #eee;
+  border: 1px solid #555;
+}
+
+/* FIX 8: Night mode active feedback — avoid jarring limegreen on dark theme */
+body.night-mode .main-btn:active:not(:disabled) {
+  background-color: #66cc66;
+}
+
+/* Called numbers strip */
+body.night-mode #calledNumbersContainerWrapper { background-color: #333; border-color: #555; }
+body.night-mode #calledNumbersContainer span   { background-color: #444; color: #eee; border: 1px solid #555; }
+
+/* Grid cells */
+body.night-mode .grid-cell        { background-color: #222; border-color: #555; color: #eee; }
+body.night-mode .grid-cell.called { background-color: #ff6666; color: #fff; }
+
+/* Card highlights */
+body.night-mode .card td.called    { color: #ff6666; }
+body.night-mode .card td.lastCalled { color: #66ccff; }
+
+/* Dropdown */
+body.night-mode select { background-color: #333; color: #eee; border: 1px solid #555; }
+
+/* Title */
+body.night-mode .title-text { color: #ff6666; }
+
+
+/* ===========================
+   13. LAYOUT — WRAPPER & SECTIONS
+=========================== */
+
+/* Main game container — centres everything */
+#gameContainer {
+  max-width: 540px;
+  width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
+  padding: 0 6px;
+  overflow: hidden;
+}
+
+/* All major sections follow wrapper width */
+.top-section,
+#bingoGrid,
+#calledNumbersContainerWrapper,
+.grid-bottom-buttons,
+.check-card-inline,
+.big-last-number-wrapper {
+  max-width: 100%;
+  width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+
+/* ===========================
+   14. TOP ROW
+=========================== */
+
+.top-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto 12px auto;
+  gap: 6px;
+  box-sizing: border-box;
+}
+
+.buttons-row {
+  display: flex;
+  flex: 1 1 0;
+  min-width: 0;
+  gap: 6px;
+  flex-wrap: nowrap;
+  align-items: center;
+  overflow: hidden;
+}
+
+.buttons-row button {
+  flex: 1 1 0;
+  min-width: 0;
+  height: 40px;
+  box-sizing: border-box;
+  padding: 6px 4px;
+  font-size: clamp(11px, 2.5vw, 14px);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  white-space: nowrap;
+}
+  /* FIX 15: Removed redundant flex-shrink: 0 — flex: 1 1 auto already implies flex-shrink: 1 */
+
+
+/* FIX 3: Merged two .big-last-number-wrapper declarations into one.
+   justify-content: flex-end was the intended final value. */
+.big-last-number-wrapper {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60px;
+  height: 60px;
+}
+
+
+/* ===========================
+   15. BOTTOM ROW BUTTONS
+=========================== */
+
+.grid-bottom-buttons {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  max-width: 540px;
+  width: 100%;
+  margin: 10px auto;
+  box-sizing: border-box;
+}
+
+.grid-bottom-buttons button {
+  height: 40px;
+  min-width: 30px;
+  box-sizing: border-box;
+  padding: 6px 10px;
+  font-size: 14px;
+  border-radius: 10px;
+  /* FIX 15: Use flex shorthand — flex: 0 0 auto already sets flex-shrink: 0, no need to repeat */
+  flex: 0 0 auto;
+}
+
+/* Next number button expands to fill remaining space */
+#nextNumberBtn {
+  flex: 1 1 auto;
+  text-align: center;
+  min-width: 80px;
+}
+
+/* Check button stays fixed width */
+#checkSelectedCardBtn {
+  flex: 0 0 auto;
+}
+
+
+/* ===========================
+   16. SELECT CARDS MODAL
+=========================== */
+
+/* FIX 13: Removed duplicate .modal rule from original Section 13 — this single
+   #selectCardsModal rule is what the JS targets, so .modal was redundant. */
+#selectCardsModal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: max(env(safe-area-inset-top), 12px) 12px 12px;
+  box-sizing: border-box;
+}
+
+body.night-mode #selectCardsModal { background: rgba(20, 20, 20, 0.8); }
+
+/* Modal content box */
+.modal-content {
+  max-width: 360px;
+  width: auto;
+  min-width: 220px;
+  max-height: calc(100vh - max(env(safe-area-inset-top), 12px) - 12px - 24px);
+  background-color: #fff;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+body.night-mode .modal-content { background-color: #222; color: #eee; }
+
+/* Modal header */
+.modal-header  { text-align: center; margin-bottom: 10px; overflow-y: auto; flex-shrink: 0; padding: 12px 12px 0; }
+.modal-title  { font-size: 1.6rem; font-weight: bold; margin: 0; }
+
+/* AutoCheck win-type selector section — single flex row */
+#autoCheckOptions {
+  border-top: 1px solid #ccc;
+  margin: 8px 0 6px;
+  padding-top: 8px;
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 4px;
+}
+body.night-mode #autoCheckOptions { border-color: #555; }
+
+.autocheck-options-label {
+  font-size: 0.6rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: #888;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.autocheck-option {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 2px;
+  font-size: clamp(0.7rem, 2.8vw, 0.9rem);
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.autocheck-option input[type="checkbox"] {
+  width: 13px;
+  height: 13px;
+  cursor: pointer;
+  accent-color: #4caf50;
+  flex-shrink: 0;
+}
+body.night-mode .autocheck-option { color: #eee; }
+
+/* FIX 4: Selected count was red (#ff6666) on white in light mode — poor contrast.
+   Changed to a dark grey for light mode; night mode keeps the red. */
+.selected-count { font-size: 1.2rem; color: #444; margin-top: 4px; }
+body.night-mode .modal-header  { background-color: #222; border-color: #555; }
+
+/* Modal top buttons row */
+.modal-top-buttons { display: flex; justify-content: center; gap: 8px; margin-bottom: 8px; }
+
+.small-btn {
+  padding: 6px 10px;
+  font-size: 12px;
+  border-radius: 8px;
+  background-color: #555;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+.small-btn:disabled {
+  background-color: #888;
+  color: #555;
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+/* Search box */
+#cardSearchWrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 6px;
+  padding: 0 6px;
+}
+.card-search-label {
+  font-size: 12px;
+  color: #888;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.card-search-input-wrap {
+  position: relative;
+  flex: 1;
+}
+#cardSearchBox {
+  width: 100%;
+  padding: 6px 28px 6px 8px;
+  margin-bottom: 0;
+  border-radius: 6px;
+  border: 1px solid #aaa;
+  box-sizing: border-box;
+}
+body.night-mode #cardSearchBox { background-color: #333; color: #eee; border: 1px solid #555; }
+
+/* Card list container */
+.modal-card-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 6px 12px;
+  max-height: 70vh;
+  overflow-y: auto;
+  width: auto;
+  max-width: 90%;
+}
+
+#modalCardList {
+  max-height: 60vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 6px;
+  width: 100%;
+  max-width: 100%;
+  min-width: 200px;
+  box-sizing: border-box;
+  align-items: stretch;
+}
+
+/* Individual card item */
+.modal-card-item {
+  cursor: pointer;
+  padding: 8px 12px;
+  margin: 2px 0;
+  text-align: center;
+  transition: background-color 0.3s, color 0.3s;
+  background-color: #969696;
+}
+
+.modal-card-item:hover    { background-color: #9e9999; }
+.modal-card-item.selected { background-color: #4caf50 !important; color: #000 !important; font-weight: bold; }
+.modal-card-item.deselected { background-color: #f44336 !important; color: #fff !important; }
+.modal-card-item.pinned   { font-weight: bold; border-bottom: 1px solid #aaa; }
+.modal-card-item.locked   { cursor: default; outline: 2px solid rgba(255,255,255,0.55); outline-offset: -2px; }
+.modal-card-item.locked:hover { background-color: #4caf50; } /* no hover change on locked+selected */
+.modal-card-item.flash-locked { animation: flashLockedRed 0.7s forwards; }
+
+@keyframes flashLockedRed {
+  0%   { box-shadow: none; }
+  20%  { box-shadow: inset 0 0 0 100px rgba(229, 57, 53, 0.88); }
+  40%  { box-shadow: none; }
+  60%  { box-shadow: inset 0 0 0 100px rgba(229, 57, 53, 0.88); }
+  80%  { box-shadow: none; }
+  100% { box-shadow: none; }
+}
+body.night-mode .modal-card-item { background-color: #333; }
+
+/* FIX 7: flash-deselect was defined twice — kept only the correct single declaration */
+.modal-card-item.flash-select   { animation: flashGreen 0.4s forwards; }
+.modal-card-item.flash-deselect { animation: flashRed   0.4s forwards; }
+
+@keyframes flashGreen {
+  0%   { background-color: #b0ffb0; }
+  50%  { background-color: limegreen; }
+  100% { background-color: #4caf50; }
+}
+
+@keyframes flashRed {
+  0%   { background-color: #ffb0b0; }
+  50%  { background-color: red; }
+  100% { background-color: #f44336; }
+}
+
+/* Glow effects for select/deselect */
+.glow-select   { box-shadow: 0 0 12px 4px limegreen; transition: box-shadow 0.4s ease-in-out; }
+.glow-deselect { box-shadow: 0 0 12px 4px red;       transition: box-shadow 0.4s ease-in-out; }
+
+
+/* ===========================
+   17. AUTO-CHECK SLIDER
+=========================== */
+
+.auto-check-wrapper {
+  height: 40px;
+  width: 70px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  margin: 0 6px;
+  box-sizing: border-box;
+}
+
+.switch { position: relative; display: inline-block; width: 42px; height: 22px; }
+.switch input { display: none; }
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background-color: #ccc;
+  transition: 0.3s;
+  border-radius: 22px;
+}
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 2px;
+  bottom: 2px;
+  background-color: white;
+  transition: 0.3s;
+  border-radius: 50%;
+}
+
+input:checked + .slider              { background-color: #4caf50; }
+input:checked + .slider:before       { transform: translateX(20px); }
+input:disabled + .slider             { opacity: 0.4; cursor: not-allowed; }
+
+.auto-check-label {
+  font-size: 10px;
+  line-height: 1;
+  text-align: center;
+  margin: 0;
+  width: 100%;
+}
+
+
+/* ===========================
+   18. WIN ANIMATION
+=========================== */
+
+/* FIX 2: Merged the two .win-animation blocks into one */
+.win-animation {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  pointer-events: none;
+  opacity: 0;
+  z-index: 2000;
+  text-align: center;
+  padding: 16px 32px;
+  border-radius: 16px;
+  background-color: rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.win-animation .win-label {
+  font-size: 52px;
+  font-weight: bold;
+  color: yellow;
+  text-shadow: 0 0 12px #ff0000, 0 0 24px #ff0000;
+  line-height: 1.1;
+}
+
+.win-animation .win-card-code {
+  font-size: 26px;
+  font-weight: bold;
+  color: yellow;
+  text-shadow: 0 0 12px #ff0000, 0 0 24px #ff0000;
+  letter-spacing: 0.05em;
+  opacity: 0.92;
+}
+
+.win-animation.show {
+  transform: translate(-50%, -50%) scale(1.2);
+  opacity: 1;
+  animation: stayThenFade 5s ease forwards;
+}
+
+@keyframes stayThenFade {
+  0%   { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
+  15%  { transform: translate(-50%, -50%) scale(1.3); opacity: 1; }
+  30%  { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+  70%  { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(1);   opacity: 0; }
+}
+
+/* FIX 12: Removed unused @keyframes popWin — nothing referenced it */
+
+
+/* ===========================
+   19. BINGO CALL ANIMATION
+=========================== */
+
+#bingoCallText.animate {
+  animation: bingoCallFade 400ms ease-out;
+}
+
+@keyframes bingoCallFade {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+
+/* ===========================
+   20. INFO ICON + POPOVER
+=========================== */
+
+.info-container { position: relative; display: flex; align-items: center; }
+
+.info-icon {
+  background-color: #444;
+  color: #eee;
+  border: 1px solid #555;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+}
+.info-icon:hover { background-color: #555; }
+
+.popover {
+  position: fixed;
+  top: 0;
+  left: 0;
+  transform: translateY(-5px);
+  background-color: #222;
+  color: #eee;
+  border: 1px solid #555;
+  border-radius: 8px;
+  padding: 10px 14px;
+  width: 260px;
+  max-width: 80vw;
+  max-height: 50vh;
+  overflow-y: auto;
+  z-index: 2000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+  font-size: 13px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.popover::after {
+  content: '';
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 32px;
+  display: block;
+  background: linear-gradient(to bottom, transparent, #222);
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+
+.popover.scrolled-to-bottom::after {
+  opacity: 0;
+}
+.popover.show { opacity: 1; visibility: visible; transform: translateX(0) translateY(0); }
+
+.popover .arrow {
+  position: absolute;
+  top: -8px;
+  left: 0;
+  transform: translateX(-50%);
+  width: 0; height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 8px solid #222;
+}
+
+.popover h4 { margin: 0 0 8px 0; font-size: 16px; color: #ff6666; text-align: left; }
+.popover ul { padding-left: 18px; margin: 0; list-style-type: disc; text-align: left; }
+.popover ul li { margin-bottom: 6px; }
+
+/* Clear search button inside search wrapper */
+#clearCardSearch {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: none;
+  cursor: pointer;
+  font-size: 16px;
+  color: #888;
+  user-select: none;
+  transition: color 0.2s, transform 0.1s;
+  touch-action: manipulation;
+}
+#clearCardSearch:hover  { color: red; transform: translateY(-50%) scale(1.2); }
+#clearCardSearch:active { color: red; transform: translateY(-50%) scale(1.2); }
+
+
+/* ===========================
+   21. SELECTED COUNT IN MODAL
+=========================== */
+
+/* FIX 4: In light mode, dark grey text replaces red for readable contrast.
+   Night mode keeps the original red. */
+#selectedCount { font-weight: bold; color: #444; }
+body.night-mode #selectedCount { color: #ff9999; }
+
+
+/* ===========================
+   22. MISC LAYOUT HELPERS
+=========================== */
+
+.two-line-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  line-height: 1.05;
+  padding: 4px 6px;
+}
+.two-line-btn span { font-size: 12px; white-space: nowrap; }
+
+
+
+/* ===========================
+   23. GLOBAL USER-SELECT & TOUCH PREVENTION
+=========================== */
+
+/* FIX 6: Consolidated two near-identical user-select blocks into one */
+body, button, input, select, textarea, label, span, td, h4, li,
+#bingoGrid, #bingoGrid div,
+.modal-card-item, .call-text-box, .title-text, .popover, ul {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* FIX 11: Removed dead #cardList rules — no element with id="cardList" exists.
+   The modal list element is id="modalCardList" and is already covered above. */
+
+   /* ===========================
+   CARD SEARCH INPUT
+=========================== */
+
+.card-search-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+}
+
+#cardSearchInput {
+  width: 100%;
+  padding: 6px 32px 6px 6px;
+  border-radius: 8px;
+  background: #333;
+  color: #eee;
+  border: 1px solid #555;
+  font-size: 13px;
+  box-sizing: border-box;
+  height: 40px;
+}
+
+#cardSearchInput:focus {
+  outline: none;
+  border-color: #888;
+}
+
+#cardSearchInput::placeholder { color: transparent; }
+
+.card-search-placeholder {
+  position: absolute;
+  left: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 11px;
+  color: #666;
+  line-height: 1.25;
+  pointer-events: none;
+  text-align: center;
+  width: calc(100% - 36px);
+  user-select: none;
+}
+
+/* Hide label when input is focused or has a value */
+#cardSearchInput:focus ~ .card-search-placeholder,
+#cardSearchInput:not(:placeholder-shown) ~ .card-search-placeholder { display: none; }
+#cardSearchInput:disabled ~ .card-search-placeholder { opacity: 0.4; }
+#cardSearchInput:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.card-search-clear {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 30px;
+  background: none;
+  border: none;
+  color: #ff6666;
+  font-size: 15px;
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  padding: 0;
+}
+
+.card-search-dropdown {
+  position: fixed;
+  background: #222;
+  border: 1px solid #555;
+  border-radius: 8px;
+  z-index: 2000;
+  max-height: 200px;
+  overflow-y: auto;
+  display: none;
+  box-shadow: 0 -4px 12px rgba(0,0,0,0.6);
+}
+
+.card-search-dropdown.open { display: block; }
+
+.card-search-item {
+  padding: 10px 14px;
+  font-size: 14px;
+  cursor: pointer;
+  border-bottom: 1px solid #333;
+  color: #eee;
+  text-align: center;
+}
+
+.card-search-item:last-child { border-bottom: none; }
+.card-search-item:active { background: #333; }
+
+body.night-mode .card-search-dropdown { background: #1a1a1a; border-color: #444; }
+body.night-mode .card-search-item { color: #eee; border-color: #333; }
+
+
+/* ===========================
+   PLAYER CODES SECTION (in Select Cards modal)
+=========================== */
+
+#playerCodesSection {
+  border: 1px solid #bbb;
+  border-radius: 8px;
+  background: #f5f5f5;
+  margin: 8px 0;
+  padding: 2px 8px 4px;
+}
+body.night-mode #playerCodesSection { border-color: #555; background: #1e1e1e; }
+
+.player-codes-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 2px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.player-codes-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #ff4d4d;
+  flex-shrink: 0;
+}
+
+.player-codes-title {
+  font-size: 0.75rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #888;
+  flex: 1;
+}
+
+.player-codes-chevron {
+  font-size: 1rem;
+  color: #888;
+}
+
+.player-codes-body {
+  padding: 4px 0 6px;
+}
+
+.player-code-input-row {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.player-code-input {
+  flex: 1;
+  padding: 5px 8px;
+  border-radius: 6px;
+  border: 1px solid #aaa;
+  font-family: monospace;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  background: #fff;
+  color: #111;
+  box-sizing: border-box;
+}
+body.night-mode .player-code-input { background: #333; color: #eee; border-color: #555; }
+
+.player-code-input.player-code-invalid {
+  border-color: #ff4d4d;
+  animation: shakeInput 0.4s ease;
+}
+
+.player-code-input.player-code-flash-red {
+  background-color: #fff0f0;
+  border-color: #ff4d4d;
+  animation: flashInputRed 0.7s ease forwards;
+}
+body.night-mode .player-code-input.player-code-flash-red { background-color: #3a1a1a; }
+
+.player-code-input.player-code-flash-green {
+  background-color: #f0fff4;
+  border-color: #4caf50;
+  animation: flashInputGreen 0.7s ease forwards;
+}
+body.night-mode .player-code-input.player-code-flash-green { background-color: #1a3a1a; }
+
+@keyframes flashInputRed {
+  0%   { background-color: #ffcccc; border-color: #ff4d4d; }
+  60%  { background-color: #ffcccc; border-color: #ff4d4d; }
+  100% { background-color: ''; border-color: ''; }
+}
+@keyframes flashInputGreen {
+  0%   { background-color: #c8f7d0; border-color: #4caf50; }
+  60%  { background-color: #c8f7d0; border-color: #4caf50; }
+  100% { background-color: ''; border-color: ''; }
+}
+
+.player-code-error-msg {
+  font-size: 11px;
+  color: #ff4d4d;
+  margin-top: 3px;
+  min-height: 14px;
+  line-height: 1.2;
+}
+
+@keyframes shakeInput {
+  0%  { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  50% { transform: translateX(4px); }
+  75% { transform: translateX(-4px); }
+  100%{ transform: translateX(0); }
+}
+
+.player-code-add-btn {
+  padding: 5px 10px;
+  border-radius: 6px;
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  white-space: nowrap;
+}
+.player-code-add-btn:active { background-color: #388e3c; }
+
+.player-code-scan-btn {
+  padding: 5px 7px;
+  border-radius: 6px;
+  background: #1a3a1a;
+  border: 1px solid #4caf50;
+  color: #4caf50;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.player-code-scan-btn:active { background: #2a5a2a; }
+body:not(.night-mode) .player-code-scan-btn { background: #e8f5e9; border-color: #4caf50; color: #2e7d32; }
+body:not(.night-mode) .player-code-scan-btn:active { background: #c8e6c9; }
+
+.player-codes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 128px;
+  overflow-y: auto;
+}
+
+.player-code-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  background: #f5f5f5;
+  border-radius: 6px;
+  padding: 4px 6px;
+}
+body.night-mode .player-code-row { background: #2a2a2a; }
+
+.player-code-label-tag {
+  font-weight: bold;
+  color: #555;
+  min-width: 20px;
+}
+body.night-mode .player-code-label-tag { color: #aaa; }
+
+.player-code-mono {
+  font-family: monospace;
+  letter-spacing: 0.08em;
+  color: #222;
+  flex-shrink: 0;
+}
+body.night-mode .player-code-mono { color: #ddd; }
+
+.player-code-tags {
+  display: flex;
+  gap: 4px;
+  flex-wrap: nowrap;
+  flex: 1;
+  overflow: hidden;
+}
+
+.player-code-card-tag {
+  background: #4caf50;
+  color: #000;
+  border-radius: 4px;
+  padding: 3px 5px;
+  font-size: 13px;
+  font-weight: bold;
+  min-width: 40px;
+  text-align: center;
+  display: inline-block;
+  box-sizing: border-box;
+  white-space: nowrap;
+}
+
+.player-code-clash-tag {
+  background: #ff4d4d;
+  color: #fff;
+  border-radius: 4px;
+  padding: 1px 5px;
+  font-size: 11px;
+  font-weight: bold;
+}
+
+/* Red variant of card tag for clashing cards */
+.player-code-card-tag.player-code-card-clash {
+  background: #ff4d4d;
+}
+
+/* Player code input clear button */
+.player-code-input-wrap {
+  position: relative;
+  flex: 1;
+}
+.player-code-input-wrap .player-code-input {
+  width: 100%;
+  padding-right: 22px;
+}
+.player-code-input-clear {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 14px;
+  color: #888;
+  user-select: none;
+  transition: color 0.2s;
+}
+.player-code-input-clear:hover { color: #ff4d4d; }
+
+.player-code-remove-btn {
+  background: none;
+  border: none;
+  color: #888;
+  cursor: pointer;
+  font-size: 12px;
+  padding: 0 2px;
+  line-height: 1;
+}
+.player-code-remove-btn:hover { color: #ff4d4d; }
+
+.player-codes-warning {
+  font-size: 11px;
+  color: #ff4d4d;
+  margin-top: 4px;
+  line-height: 1.3;
+}
+
+/* Muted red highlight on modal card items that clash between players */
+.modal-card-item.clash-highlight {
+  background-color: #5a1a1a !important;
+  color: #ffaaaa !important;
+}
+body:not(.night-mode) .modal-card-item.clash-highlight {
+  background-color: #ffdddd !important;
+  color: #800000 !important;
+}
+
+
+/* ===========================
+   TTS SETTINGS DROPDOWN
+=========================== */
+
+/* Positioning context for the dropdown arrow anchor */
+#toggleTTSBtn {
+  position: relative;
+}
+
+/* Gear icon overlaid bottom-right of the TTS button */
+.tts-gear-icon {
+  position: absolute;
+  bottom: 1px;
+  right: 1px;
+  font-size: 9px;
+  color: #888;
+  pointer-events: none;
+  line-height: 1;
+}
+
+/* Dropdown panel — fixed so it escapes overflow:hidden ancestors */
+#ttsSettingsDropdown {
+  position: fixed;
+  z-index: 500;
+  background: #1e1e1e;
+  border: 1px solid #444;
+  border-radius: 10px;
+  padding: 8px 10px 6px;
+  min-width: 200px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.6);
+  font-family: Arial, sans-serif;
+}
+
+/* Upward-pointing CSS triangle arrow */
+#ttsSettingsDropdown::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  right: 14px;
+  width: 0; height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 8px solid #444;
+}
+#ttsSettingsDropdown::after {
+  content: '';
+  position: absolute;
+  top: -6px;
+  right: 15px;
+  width: 0; height: 0;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-bottom: 7px solid #1e1e1e;
+}
+
+/* Dropdown header row */
+.tts-dropdown-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #333;
+}
+.tts-dropdown-title {
+  font-size: 11px;
+  font-weight: bold;
+  color: #aaa;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.tts-close-btn {
+  background: none;
+  border: none;
+  color: #666;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 0 2px;
+  line-height: 1;
+}
+.tts-close-btn:hover { color: #eee; }
+
+/* Each TTS item row */
+.tts-item-row {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 3px 2px;
+  border-radius: 6px;
+  margin-bottom: 2px;
+  cursor: default;
+}
+.tts-item-row.tts-dragging { opacity: 0.35; } /* kept for safety */
+
+/* Drag handle */
+.tts-drag-handle {
+  color: #555;
+  cursor: grab;
+  font-size: 15px;
+  line-height: 1;
+  touch-action: none;
+  flex-shrink: 0;
+  user-select: none;
+}
+.tts-drag-handle:active { cursor: grabbing; }
+
+/* Smaller switch variant for TTS rows */
+.switch.tts-switch { width: 36px; height: 20px; flex-shrink: 0; }
+.switch.tts-switch .slider { border-radius: 20px; }
+.switch.tts-switch .slider:before { height: 16px; width: 16px; bottom: 2px; left: 2px; }
+.switch.tts-switch input:checked + .slider:before { transform: translateX(16px); }
+
+/* Item label */
+.tts-item-label {
+  flex: 1;
+  font-size: 13px;
+  color: #eee;
+}
+
+/* Order label (1st / 2nd / 3rd) */
+.tts-order-label {
+  font-size: 10px;
+  color: #555;
+  min-width: 20px;
+  text-align: right;
+}
+
+/* Placeholder shown while dragging */
+.tts-drag-placeholder {
+  background: #2a2a2a;
+  border: 1px dashed #555;
+  border-radius: 6px;
+  margin-bottom: 2px;
+  box-sizing: border-box;
+}
+
+/* Hint line at the bottom */
+.tts-dropdown-hint {
+  font-size: 10px;
+  color: #555;
+  text-align: center;
+  margin-top: 6px;
+  padding-top: 5px;
+  border-top: 1px solid #2a2a2a;
+}
+
+/* ===========================
+   SETTINGS DROPDOWN
+=========================== */
+
+#settingsBtn {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.settings-dropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 600;
+  background: #1e1e1e;
+  border: 1px solid #444;
+  border-radius: 10px;
+  padding: 6px 10px;
+  min-width: 210px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.55);
+  font-family: Arial, sans-serif;
+}
+.settings-dropdown::before {
+  content: '';
+  position: absolute;
+  top: -8px; right: 12px;
+  width: 0; height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 8px solid #444;
+}
+.settings-dropdown::after {
+  content: '';
+  position: absolute;
+  top: -6px; right: 13px;
+  width: 0; height: 0;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-bottom: 7px solid #1e1e1e;
+}
+
+/* The top-section needs position:relative so the dropdown anchors to it */
+.top-section { position: relative; }
+
+.settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 2px;
+  border-bottom: 1px solid #2a2a2a;
+}
+.settings-row:last-child { border-bottom: none; }
+
+.settings-row-label {
+  font-size: 13px;
+  color: #eee;
+}
+
+.settings-row-tts {
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.settings-row-tts-left {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  flex: 1;
+}
+.settings-tts-hint { display: none; } /* replaced by inline expand */
+
+.settings-switch { flex-shrink: 0; }
+
+/* Keyboard shortcut hints — visible on hover, desktop only */
+.kbd-hint {
+  display: none;
+  font-size: 10px;
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #aaa;
+  font-family: monospace;
+  margin-left: 5px;
+  vertical-align: middle;
+  pointer-events: none;
+}
+@media (hover: hover) {
+  button:hover .kbd-hint { display: inline; }
+}
+
+/* Home button in header */
+.home-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  border: 1px solid #444;
+  background: #2a2a2a;
+  color: #aaa;
+  text-decoration: none;
+  flex-shrink: 0;
+  transition: background 0.2s;
+}
+.home-btn:hover { background: #383838; color: #eee; }
+
+/* TTS sub-toggle row */
+.tts-sub-toggle-row {
+  padding: 5px 14px 5px 26px !important;
+  cursor: pointer;
+  border-top: 1px solid #2a2a2a;
+}
+.tts-sub-toggle-row:hover { background: #252525; }
+.tts-sub-label {
+  font-size: 12px;
+  color: #777;
+  flex: 1;
+}
+.tts-sub-chevron {
+  font-size: 10px;
+  color: #555;
+}
+
+/* TTS inline settings panel */
+.tts-inline-settings {
+  background: #1e1e1e;
+  border: 1px solid #333;
+  border-radius: 6px;
+  padding: 6px 8px;
+  margin-top: 4px;
+}
+
+/* ↑↓ reorder buttons in TTS items */
+.tts-arrow-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex-shrink: 0;
+}
+.tts-order-btn {
+  font-size: 11px;
+  padding: 1px 4px;
+  border-radius: 3px;
+  border: 1px solid #444;
+  background: #2a2a2a;
+  color: #aaa;
+  cursor: pointer;
+  line-height: 1.2;
+  min-width: 20px;
+}
+.tts-order-btn:disabled { opacity: 0.25; cursor: default; }
+.tts-order-btn:not(:disabled):hover { background: #383838; color: #eee; }
+
+
+/* ===========================
+   AUTOCHECK TOGGLE IN TOP ROW
+=========================== */
+
+.autocheck-toprow-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+}
+.autocheck-toprow-label {
+  font-size: 9px;
+  color: #ccc;
+  line-height: 1.1;
+  text-align: center;
+}
+body:not(.night-mode) .autocheck-toprow-label { color: #555; }
+.autocheck-toprow-switch { margin: 0; }
+
+
+/* ===========================
+   OPTIONS SECTION (in Select Cards modal)
+=========================== */
+
+#optionsSection {
+  border: 1px solid #bbb;
+  border-radius: 8px;
+  background: #f5f5f5;
+  margin: 8px 0;
+  padding: 2px 8px 4px;
+}
+body.night-mode #optionsSection { border-color: #555; background: #1e1e1e; }
+
+.options-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 6px 2px;
+  border-top: 1px solid #ddd;
+}
+body.night-mode .options-row { border-color: #333; }
+.options-row:first-child { border-top: none; }
+
+.options-row-left { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
+.options-row-label { font-size: 13px; color: #222; }
+body.night-mode .options-row-label { color: #eee; }
+.options-row-note { font-size: 10px; color: #999; line-height: 1.2; }
+
+.options-switch { flex-shrink: 0; margin-top: 2px; }
+
+/* AutoCheck 1st inside Options — add top border separator */
+#optionsSection #autoCheckOptions {
+  border-top: 1px solid #ddd;
+  margin: 4px 0 2px;
+  padding-top: 8px;
+}
+body.night-mode #optionsSection #autoCheckOptions { border-color: #333; }
+
+
+/* ===========================
+   CONFIRM WIN BUTTON
+=========================== */
+
+#confirmWinBtn {
+  flex: 0 0 auto;
+  height: 40px;
+  padding: 4px 8px;
+  font-size: 11px;
+  font-weight: bold;
+  line-height: 1.2;
+  text-align: center;
+  border-radius: 10px;
+  border: 1px solid #555;
+  background: #444;
+  color: #888;
+  cursor: not-allowed;
+  box-sizing: border-box;
+  white-space: nowrap;
+}
+body:not(.night-mode) #confirmWinBtn {
+  background: #ddd;
+  border-color: #bbb;
+  color: #aaa;
+}
+
+#confirmWinBtn.confirm-win-active {
+  background: #1a3a1a;
+  border: 2px solid #4caf50;
+  color: #4caf50;
+  cursor: pointer;
+  animation: confirmWinPulse 1.1s ease-in-out infinite;
+}
+body:not(.night-mode) #confirmWinBtn.confirm-win-active {
+  background: #e8f5e9;
+  border-color: #4caf50;
+  color: #2e7d32;
+}
+
+@keyframes confirmWinPulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(76,175,80,0.5); }
+  50%      { box-shadow: 0 0 0 5px rgba(76,175,80,0.15); }
+}
+
+
+/* ===========================
+   PRE-GAME TICKER
+=========================== */
+
+#bingoCallText.ticker-mode {
+  overflow: hidden;
+  display: block;
+  white-space: nowrap;
+  cursor: default;
+  padding: 0;
+}
+
+/* Track holds two copies side by side, JS moves it */
+.ticker-track {
+  display: inline-flex;
+  white-space: nowrap;
+  will-change: transform;
+}
+
+/* Each copy is inline, no wrapping */
+.ticker-copy {
+  display: inline-block;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.ticker-gap { display: inline-block; width: 60px; }
+
+.ticker-key  { color: #aaa; font-size: 12px; }
+.ticker-on   { color: #4caf50; font-weight: bold; font-size: 12px; }
+.ticker-off  { color: #666; font-size: 12px; }
+.ticker-green{ color: #4caf50; font-size: 12px; }
+.ticker-val  { color: #fff; font-size: 12px; }
+.ticker-sep  { color: #444; font-size: 12px; margin: 0 6px; }
+
+body:not(.night-mode) .ticker-key   { color: #888; }
+body:not(.night-mode) .ticker-on    { color: #2e7d32; }
+body:not(.night-mode) .ticker-off   { color: #bbb; }
+body:not(.night-mode) .ticker-green { color: #2e7d32; }
+body:not(.night-mode) .ticker-val   { color: #333; }
+body:not(.night-mode) .ticker-sep   { color: #ccc; }
+
+
+/* ===========================
+   WIN TRIGGER CELL PULSE
+=========================== */
+
+.grid-cell.win-trigger {
+  animation: winTriggerPulse 1s ease-in-out 3;
+}
+
+@keyframes winTriggerPulse {
+  0%,100% {
+    background-color: #f5c842;
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(245,200,66,0.6);
+  }
+  50% {
+    background-color: #ffe566;
+    transform: scale(1.18);
+    box-shadow: 0 0 0 4px rgba(245,200,66,0.25);
+  }
+}
+
+body.night-mode .grid-cell.win-trigger {
+  animation: winTriggerPulseNight 1s ease-in-out 3;
+}
+
+@keyframes winTriggerPulseNight {
+  0%,100% {
+    background-color: #e6b800;
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(230,184,0,0.6);
+  }
+  50% {
+    background-color: #ffd700;
+    transform: scale(1.18);
+    box-shadow: 0 0 0 4px rgba(230,184,0,0.3);
+  }
+}
