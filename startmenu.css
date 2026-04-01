@@ -184,6 +184,11 @@ button:disabled {
   line-height: 1.6;
 }
 
+.how-play-platform {
+  margin-top: 10px;
+  line-height: 1.8;
+}
+
 .qr-btn {
   display: inline-flex;
   align-items: center;
