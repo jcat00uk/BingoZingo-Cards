@@ -1,19 +1,19 @@
 <!DOCTYPE html>
-<!-- BingoBongo v1.0 — FIX 6: version string helps identify cached builds -->
+<!-- BingoZingo v1.0 — FIX 6: version string helps identify cached builds -->
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>BingoBongo</title>
-  <link rel="stylesheet" href="startmenu.css?v=20260329-2053">
+  <title>BingoZingo</title>
+  <link rel="stylesheet" href="startmenu.css?v=20260401-1018">
 </head>
 <!-- FIX 2: Removed hardcoded class="night-mode" — night mode is now
      applied by startmenu.js based on the saved localStorage preference,
      so the JS toggle actually works correctly on load. -->
 <body>
 
-<h1>BingoBongo</h1>
-<img src="bingobongo.png" alt="BingoBongo" style="width:100%;max-width:300px;display:block;margin:-20px auto;padding:0;pointer-events:none;user-select:none;-webkit-user-select:none;" />
+<h1>BingoZingo</h1>
+<img src="bingozingo.png" alt="BingoZingo" style="width:100%;max-width:300px;display:block;margin:-20px auto;padding:0;pointer-events:none;user-select:none;-webkit-user-select:none;" />
 
 <!-- FIX 8: Buttons wired via addEventListener in startmenu.js
      instead of inline onclick attributes. -->
@@ -51,14 +51,14 @@
 
 
 <!-- FIX 5: startmenu.js is now actually loaded -->
-<link rel="stylesheet" href="changelog-popup.css?v=20260329-2053">
-<link rel="stylesheet" href="help/help-popup.css?v=20260329-2053">
-<script src="help/help-popup.js?v=20260329-2053" defer></script>
-<script src="version.js?v=20260329-2053" defer></script>
-<script src="capacitor.js?v=20260329-2053" defer></script>
-<script src="back-handler.js?v=20260329-2053" defer></script>
-<script src="changelog.js?v=20260329-2053" defer></script>
-<script src="startmenu.js?v=20260329-2053" defer></script>
+<link rel="stylesheet" href="changelog-popup.css?v=20260401-1018">
+<link rel="stylesheet" href="help/help-popup.css?v=20260401-1018">
+<script src="help/help-popup.js?v=20260401-1018" defer></script>
+<script src="version.js?v=20260401-1018" defer></script>
+<script src="capacitor.js?v=20260401-1018" defer></script>
+<script src="back-handler.js?v=20260401-1018" defer></script>
+<script src="changelog.js?v=20260401-1018" defer></script>
+<script src="startmenu.js?v=20260401-1018" defer></script>
 
 <!-- FIX 7: Service worker registration failure shown in console — acceptable
      for a local game app. No user-visible error needed unless offline support

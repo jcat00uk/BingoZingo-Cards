@@ -380,7 +380,7 @@ button {
   <h2 style="margin:0;">Bingo Cards PDF Generator</h2>
 </div>
 <p id="desc-random-codes" style="text-align:center;font-size:13px;color:#888;margin:-8px 0 12px 0;">
-  Cards are printed in <strong>pairs</strong> — each pair is grouped so the two cards share as few numbers as possible, making them ideal to cut out and hand to a single player. A <strong>share code</strong> is printed above each pair so the player can load both cards in the BingoBongo app.
+  Cards are printed in <strong>pairs</strong> — each pair is grouped so the two cards share as few numbers as possible, making them ideal to cut out and hand to a single player. A <strong>share code</strong> is printed above each pair so the player can load both cards in the BingoZingo app.
 </p>
 <p id="desc-random" style="text-align:center;font-size:13px;color:#888;margin:-8px 0 12px 0;display:none;">
   Cards are printed in a random order with no grouping or share codes.
@@ -911,7 +911,7 @@ function buildKeyPageEl(groups, totalCardPages, orientation, keyPageIdx, totalKe
   hdr.style.cssText = 'display:flex;justify-content:space-between;align-items:baseline;border-bottom:1.5px solid #333;padding-bottom:3px;margin-bottom:5px;flex-shrink:0;';
   hdr.innerHTML = `
     <div style="display:flex;flex-direction:column;gap:1px;">
-      <span style="font-size:10px;font-weight:bold;color:#111;">BingoBongo — Player Card Key</span>
+      <span style="font-size:10px;font-weight:bold;color:#111;">BingoZingo — Player Card Key</span>
       <span style="font-size:7px;color:#666;font-family:monospace;">Print code: ${printCode}</span>
     </div>
     <span style="font-size:7px;color:#888;">${totalCardPages} card page${totalCardPages!==1?'s':''} · ${groups.length} group${groups.length!==1?'s':''}</span>`;
@@ -950,7 +950,7 @@ function buildKeyPageEl(groups, totalCardPages, orientation, keyPageIdx, totalKe
   ftr.style.cssText = 'display:flex;justify-content:space-between;border-top:0.5px solid #ddd;padding-top:3px;margin-top:4px;flex-shrink:0;';
   ftr.innerHTML = `
     <span style="font-size:5.5px;color:#ccc;font-family:monospace;">${printCode}</span>
-    <span style="font-size:5.5px;color:#ccc;">Scan with BingoBongo caller app</span>
+    <span style="font-size:5.5px;color:#ccc;">Scan with BingoZingo caller app</span>
     <span style="font-size:5.5px;color:#ccc;">Key · ${keyPageIdx+1} of ${totalKeyPages}</span>`;
   page.appendChild(ftr);
   return page;
@@ -972,7 +972,7 @@ function renderKeyPagePdf(pdf, groups, totalCardPages, pageWidth, pageHeight, or
   pdf.setFont(undefined, 'bold');
   pdf.setFontSize(9);
   pdf.setTextColor(30,30,30);
-  pdf.text('BingoBongo — Player Card Key', padding, padding + 3);
+  pdf.text('BingoZingo — Player Card Key', padding, padding + 3);
 
   pdf.setFont(undefined, 'normal');
   pdf.setFontSize(6);
@@ -1055,7 +1055,7 @@ function renderKeyPagePdf(pdf, groups, totalCardPages, pageWidth, pageHeight, or
   pdf.setTextColor(200,200,200);
   pdf.setFont(undefined, 'normal');
   pdf.text(printCode, padding, fy + 3, { align: 'left' });
-  pdf.text('Scan with BingoBongo caller app', pageWidth / 2, fy + 3, { align: 'center' });
+  pdf.text('Scan with BingoZingo caller app', pageWidth / 2, fy + 3, { align: 'center' });
   pdf.text(`Key · ${keyPageIdx+1} of ${totalKeyPages}`, pageWidth - padding, fy + 3, { align: 'right' });
 }
 
@@ -1562,7 +1562,7 @@ downloadBtn.addEventListener('click', () => {
   pdf.setProperties({
     title: `Bingo Cards A4 ${orientation === 'portrait' ? 'Portrait' : 'Landscape'}`,
     subject: 'Bingo Cards',
-    creator: 'BingoBongo'
+    creator: 'BingoZingo'
   });
   const pageWidth    = pdf.internal.pageSize.getWidth();
   const pageHeight   = pdf.internal.pageSize.getHeight();
