@@ -1,5 +1,5 @@
 /* =============================================
-   BingoZingo Help System — help-content.js
+   BingoNingo Help System — help-content.js
    All feature descriptions for the help popup.
 
    Each entry:
@@ -63,7 +63,7 @@ window.helpContent = {
     title: 'Player Codes',
     body: [
       'The Player Codes section lets you load cards directly from players using their <strong>share code</strong>.',
-      'Each player opens the BingoZingo Player Cards app, picks their cards, and shares their unique code with you. Enter it here or scan their QR code.',
+      'Each player opens the BingoNingo Player Cards app, picks their cards, and shares their unique code with you. Enter it here or scan their QR code.',
       'Loaded player cards are <strong>automatically selected and locked</strong> — they cannot be deselected individually, only by removing that player entry.',
       'If two players have the same card in common, a clash warning appears and both entries are highlighted in red.'
     ],
@@ -106,7 +106,7 @@ window.helpContent = {
   caller_tts: {
     title: 'Text-to-speech',
     body: [
-      'When enabled, BingoZingo reads each called number aloud using your device\'s built-in speech engine.',
+      'When enabled, BingoNingo reads each called number aloud using your device\'s built-in speech engine.',
       'Use <strong>TTS Settings</strong> (the row below) to control which items are spoken and in what order.',
       'On Android, the UK English voice is used if available.'
     ]
@@ -165,7 +165,7 @@ caller_start: {
   caller_win_types: {
     title: 'Win Types',
     body: [
-      'BingoZingo supports three win tiers:',
+      'BingoNingo supports three win tiers:',
     ],
     list: [
       '<strong>Line</strong> — any complete horizontal row of 5 numbers on a card',
@@ -211,7 +211,7 @@ caller_start: {
     title: 'Your Share Code',
     body: [
       'Your share code is a unique code that identifies your selected cards.',
-      '<strong>Tap it to copy</strong>, then give it to your caller. They enter it into the Player Codes section of BingoZingo Caller to load your cards into AutoCheck.',
+      '<strong>Tap it to copy</strong>, then give it to your caller. They enter it into the Player Codes section of BingoNingo Caller to load your cards into AutoCheck.',
       'Alternatively, the caller can scan your QR code directly using the scan button in the Caller app.',
       'Your share code changes each time you pick different cards.'
     ],
@@ -253,7 +253,7 @@ caller_start: {
     title: 'QR Code Button',
     body: [
       'Shows a fullscreen QR code containing your share code.',
-      'Your caller can scan this directly using the camera button in the BingoZingo Caller app — no typing needed.',
+      'Your caller can scan this directly using the camera button in the BingoNingo Caller app — no typing needed.',
       'The QR button is greyed out until you have confirmed your card selection.'
     ],
     image: 'QR-Code.png'
@@ -286,7 +286,7 @@ caller_start: {
       '<strong>3×4</strong> — 12 cards per page, good all-rounder',
       '<strong>4×5</strong> — 20 cards per page, best for large events'
     ],
-    body2: 'In <strong>Random with Share Codes</strong> mode, cards are printed in pairs. Each pair is grouped with a share code above it so players can load both cards into the BingoZingo app.',
+    body2: 'In <strong>Random with Share Codes</strong> mode, cards are printed in pairs. Each pair is grouped with a share code above it so players can load both cards into the BingoNingo app.',
 	image: 'print-card-layout.png'
   },
 
@@ -296,7 +296,7 @@ caller_start: {
       'Controls how cards are arranged across the printed pages.',
     ],
     list: [
-      '<strong>Random with Share Codes</strong> — cards are paired randomly, each pair sharing as few numbers as possible. A share code is printed above each pair. Recommended for events where players will use the BingoZingo app.',
+      '<strong>Random with Share Codes</strong> — cards are paired randomly, each pair sharing as few numbers as possible. A share code is printed above each pair. Recommended for events where players will use the BingoNingo app.',
       '<strong>Random</strong> — cards in random order with no grouping or share codes. Good for purely physical play.',
       '<strong>Sequential</strong> — cards printed in numeric order (Card 1, Card 2, …). Choose a page range to print a subset.'
     ],

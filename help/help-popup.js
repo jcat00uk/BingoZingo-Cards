@@ -1,5 +1,5 @@
 /* =============================================
-   BingoZingo Help System — help-popup.js
+   BingoNingo Help System — help-popup.js
    Single reusable long-press help engine.
    Include after help-content.js on each page.
    ============================================= */
@@ -147,8 +147,8 @@
     document.body.style.overflow = 'hidden';
 
     // Mark first use
-    if (!localStorage.getItem('bingozingo_help_used')) {
-      localStorage.setItem('bingozingo_help_used', '1');
+    if (!localStorage.getItem('bingoningo_help_used')) {
+      localStorage.setItem('bingoningo_help_used', '1');
     }
   }
 
@@ -222,15 +222,15 @@
 
   // ── FIRST VISIT HINT ───────────────────────────────────────
   function showFirstVisitHint() {
-    if (localStorage.getItem('bingozingo_help_used')) return;
-    if (localStorage.getItem('bingozingo_help_hint_shown')) return;
+    if (localStorage.getItem('bingoningo_help_used')) return;
+    if (localStorage.getItem('bingoningo_help_hint_shown')) return;
 
     var hint = document.createElement('div');
     hint.id = 'helpFirstVisitHint';
     hint.innerHTML = 'Press and hold any <span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:rgba(160,180,210,0.7);color:#fff;font-size:7px;font-weight:700;line-height:12px;text-align:center;vertical-align:middle;">?</span> button or label for a feature explanation';
     document.body.appendChild(hint);
     setTimeout(function () { hint.remove(); }, 5000);
-    localStorage.setItem('bingozingo_help_hint_shown', '1');
+    localStorage.setItem('bingoningo_help_hint_shown', '1');
   }
 
   // ── INIT ───────────────────────────────────────────────────
@@ -272,7 +272,7 @@
   // ── DOTS TOGGLE ────────────────────────────────────────────
   function initDotsToggle() {
     // Apply saved preference on load
-    if (localStorage.getItem('bingozingo_help_dots_hidden') === '1') {
+    if (localStorage.getItem('bingoningo_help_dots_hidden') === '1') {
       document.body.classList.add('help-dots-hidden');
     }
     // Wire up all toggle buttons
@@ -280,7 +280,7 @@
       updateToggleLabel(btn);
       btn.addEventListener('click', function() {
         var hidden = document.body.classList.toggle('help-dots-hidden');
-        localStorage.setItem('bingozingo_help_dots_hidden', hidden ? '1' : '0');
+        localStorage.setItem('bingoningo_help_dots_hidden', hidden ? '1' : '0');
         document.querySelectorAll('.help-dots-toggle').forEach(updateToggleLabel);
       });
     });
