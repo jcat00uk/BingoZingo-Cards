@@ -1,6 +1,15 @@
 window.CHANGELOG = {
 
-  '20260405-1621': {
+  '20260406-1701': {
+    changes: [
+      { tag: 'update', text: 'Rebranded to BingoNingo', editions: 'all' },
+      { tag: 'new', text: 'Added New Style option in Bingo Card', editions: 'all' },
+      { tag: 'new', text: 'Add next win text if autocheck enabled', editions: 'full' },
+      { tag: 'new', text: 'Added information about selecting cards', editions: 'full' }
+    ]
+  },
+
+  '20260406-1600': {
     changes: [
       { tag: 'new', text: 'Add inmage to bingocaller start infograpic', editions: 'all' },
       { tag: 'new', text: 'Changelog popup shows on version update with What\'s New entries per edition', editions: 'all' },
