@@ -1,6 +1,6 @@
 window.CHANGELOG = {
 
-  '20260407-2201': {
+  '20260407-2203': {
     changes: [
       { tag: 'update', text: 'Rebranded to BingoNingo', editions: 'all' },
       { tag: 'new', text: 'Added New Style option in Bingo Card', editions: 'all' },
