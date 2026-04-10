@@ -1,6 +1,6 @@
 window.CHANGELOG = {
 
-  '20260410-190659': {
+  '20260410-192717': {
     changes: [
       { tag: 'fix', text: 'Fixed some page scaling issues', editions: 'full' },
       { tag: 'new', text: 'Added ads', editions: 'all' },
