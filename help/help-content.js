@@ -332,6 +332,27 @@ caller_start: {
       'In a web browser, the PDF downloads automatically.',
       'The number of pages downloaded depends on the <strong>Number of Pages</strong> or <strong>Page Range</strong> setting.'
     ]
+  },
+
+  caller_themes: {
+    title: 'Themes',
+    body: [
+      'The Themes section lets you change the colour scheme of the entire app.',
+      'Choose from the built-in presets — tap any preset to apply it instantly and see the changes live.',
+      'Tap <strong>Customise Theme</strong> to expand the colour editor. Tap any colour circle to open the colour picker — the app updates live behind it as you drag. Press <strong>Cancel</strong> to revert to the previous colour or <strong>Apply</strong> to keep it.',
+      'Tap <strong>Save</strong> to store your current colours as a named theme. Saved themes appear in the preset list and can be deleted with the <strong>✕</strong> button next to them.',
+      'Use <strong>Imp / Exp</strong> to export your current theme as JSON for backup or to share with others, or paste JSON to import a theme. Your last used theme is remembered between sessions.'
+    ]
+  },
+
+  caller_remove_ads: {
+    title: 'Remove Ads',
+    body: [
+      'Removes all adverts from the app with a one-time purchase.',
+      'Tap <strong>Remove Ads</strong> to begin the purchase through the Google Play Store. You will not be charged more than once for the same purchase.',
+      'If you have already purchased on this account or a previous device, tap <strong>Restore</strong> to reinstate it without being charged again.',
+      'Purchases are tied to your Google Play account and can be restored on any device signed in to the same account.'
+    ]
   }
 
 };

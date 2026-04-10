@@ -178,6 +178,11 @@
   </div>
 
   <button id="saveThemeBtn">Save theme</button>
+  <!-- IAP section — populated by iap-manager.js for Full+Ads builds only -->
+  <div id="iapSection" style="display:none; padding:8px 0 4px;">
+    <button id="removeAdsBtn" style="width:100%;padding:10px;margin-bottom:6px;background:#1a1a1a;border:1px solid #444;color:#eee;border-radius:8px;font-size:14px;cursor:pointer;">Remove Ads</button>
+    <button id="restorePurchasesBtn" style="width:100%;padding:8px;background:none;border:1px solid #333;color:#888;border-radius:8px;font-size:12px;cursor:pointer;">Restore Purchase</button>
+  </div>
 </div>
 
 <!-- Card selection area -->
@@ -268,7 +273,9 @@
 <script src="help/help-popup.js?v=.0.0" defer></script>
 <script src="sharecode.js?v=.0.0" defer></script>
 <script src="version.js?v=.0.0" defer></script>
-<script src="capacitor.js?v=.0.0" defer></script>
+<script src="capacitor.js" defer></script>
+<script src="admob-manager.js?v=.0.0"></script>
+<script src="iap-manager.js?v=.0.0"></script>
 <script src="cards.js?v=.0.0" defer></script>
 <script src="cardindex.js?v=.0.0" defer></script>
 <script src="playercard.js?v=.0.0" defer></script>

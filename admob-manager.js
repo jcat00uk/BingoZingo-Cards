@@ -1,1 +1,1 @@
-window.AdMobManager={init:function(){},maybeShowAd:function(){},preloadInterstitial:function(){}};
+window.AdMobManager={init:function(){},maybeShowAd:function(){},maybeShowAdThenDo:function(_,cb){if(cb)cb();},preloadInterstitial:function(){}};

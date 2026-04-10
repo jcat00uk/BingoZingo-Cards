@@ -1,6 +1,14 @@
 window.CHANGELOG = {
 
-  '20260407-231303': {
+  '20260410-104718': {
+    changes: [
+      { tag: 'fix', text: 'Fixed some page scaling issues', editions: 'full' },
+      { tag: 'new', text: 'Added ads', editions: 'all' },
+      { tag: 'new', text: 'Added themes to bingocaller', editions: 'full' }
+    ]
+  },
+
+  '20260410-0931': {
     changes: [
       { tag: 'update', text: 'Rebranded to BingoNingo', editions: 'all' },
       { tag: 'new', text: 'Added New Style option in Bingo Card', editions: 'all' },
