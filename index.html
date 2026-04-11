@@ -1,103 +1,262 @@
 <!DOCTYPE html>
-<!-- BingoNingo v1.0 — FIX 6: version string helps identify cached builds -->
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>BingoNingo</title>
-  <link rel="stylesheet" href="startmenu.css?v=20260411-113951">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="BingoNingo — Free bingo player cards app for Android. Play along at any bingo game with your own digital cards on your phone. Web version available for iPhone & iPad.">
+  <title>BingoNingo — Free Bingo Player Cards</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:#0f0f12; --bg2:#17171d; --bg3:#1e1e26;
+      --red:#ff4444; --red2:#ff6666; --gold:#ffd54f;
+      --green:#4caf50; --blue:#3399ff;
+      --text:#eee; --muted:#888; --border:#2a2a36;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family:'Nunito',sans-serif; background:var(--bg); color:var(--text); overflow-x:hidden; line-height:1.6; }
+
+    .hero { min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:40px 20px 60px; position:relative; overflow:hidden; }
+    .hero::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(255,68,68,.12) 0%,transparent 70%),radial-gradient(ellipse 60% 40% at 80% 80%,rgba(51,153,255,.08) 0%,transparent 60%); pointer-events:none; }
+    .hero-banner { width:100%; max-width:580px; border-radius:20px; overflow:hidden; margin-bottom:32px; box-shadow:0 20px 60px rgba(255,68,68,.2),0 4px 20px rgba(0,0,0,.6); animation:fadeUp .8s ease both; }
+    .hero-banner img { width:100%; height:auto; display:block; }
+    .hero-title { font-family:'Fredoka One',cursive; font-size:clamp(2.8rem,8vw,5rem); color:var(--red2); text-shadow:0 0 30px rgba(255,100,100,.4); line-height:1; margin-bottom:12px; animation:fadeUp .8s .1s ease both; }
+
+    /* UPDATED HERO SUBTEXT */
+    .hero-sub { font-size:clamp(1rem,3vw,1.3rem); color:var(--muted); max-width:480px; margin:0 auto 36px; font-weight:600; animation:fadeUp .8s .2s ease both; }
+    .hero-sub span { color:var(--gold); }
+
+    .hero-btns { display:flex; gap:14px; flex-wrap:wrap; justify-content:center; animation:fadeUp .8s .3s ease both; }
+
+    .btn-primary { display:inline-flex; align-items:center; gap:10px; padding:14px 28px; background:var(--red); color:#fff; font-family:'Nunito',sans-serif; font-size:1rem; font-weight:800; border-radius:50px; text-decoration:none; border:none; cursor:pointer; transition:transform .15s,box-shadow .15s; box-shadow:0 4px 20px rgba(255,68,68,.35); }
+    .btn-primary:hover { transform:translateY(-2px); box-shadow:0 8px 28px rgba(255,68,68,.45); }
+    .btn-secondary { display:inline-flex; align-items:center; gap:10px; padding:14px 28px; background:transparent; color:var(--text); font-family:'Nunito',sans-serif; font-size:1rem; font-weight:700; border-radius:50px; text-decoration:none; border:2px solid var(--border); cursor:pointer; transition:transform .15s,border-color .15s; }
+    .btn-secondary:hover { transform:translateY(-2px); border-color:var(--muted); }
+
+    .section { padding:80px 20px; max-width:900px; margin:0 auto; }
+    .section-label { font-size:.75rem; font-weight:800; letter-spacing:.15em; text-transform:uppercase; color:var(--red2); margin-bottom:10px; text-align:center; }
+    .section-title { font-family:'Fredoka One',cursive; font-size:clamp(1.8rem,5vw,2.8rem); text-align:center; margin-bottom:12px; }
+    .section-desc { text-align:center; color:var(--muted); font-size:1rem; max-width:520px; margin:0 auto 52px; font-weight:600; }
+
+    .divider { width:48px; height:3px; background:var(--red); border-radius:2px; margin:0 auto 48px; }
+
+    .features-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:16px; }
+    .feature-card { background:var(--bg2); border:1px solid var(--border); border-radius:16px; padding:28px 24px; transition:transform .2s,border-color .2s; }
+    .feature-card:hover { transform:translateY(-3px); border-color:#3a3a4a; }
+    .feature-icon { font-size:2rem; margin-bottom:14px; display:block; }
+    .feature-title { font-family:'Fredoka One',cursive; font-size:1.2rem; margin-bottom:8px; }
+    .feature-desc { font-size:.9rem; color:var(--muted); line-height:1.6; font-weight:600; }
+
+    .steps-section { background:var(--bg2); border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
+    .steps-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:32px; text-align:center; }
+    .step { display:flex; flex-direction:column; align-items:center; gap:12px; }
+    .step-num { width:52px; height:52px; border-radius:50%; background:var(--bg3); border:2px solid var(--red); display:flex; align-items:center; justify-content:center; font-family:'Fredoka One',cursive; font-size:1.4rem; color:var(--red2); flex-shrink:0; }
+    .step-title { font-family:'Fredoka One',cursive; font-size:1.05rem; }
+    .step-desc { font-size:.88rem; color:var(--muted); font-weight:600; line-height:1.5; }
+
+    .apps-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px; }
+    .app-card { background:var(--bg2); border:1px solid var(--border); border-radius:20px; padding:32px 28px; transition:transform .2s,border-color .2s; }
+    .app-card:hover { transform:translateY(-3px); border-color:#3a3a4a; }
+    .app-card.featured { border-color:var(--red); box-shadow:0 0 0 1px rgba(255,68,68,.2),0 8px 32px rgba(255,68,68,.1); }
+    .app-badge { display:inline-block; padding:3px 12px; border-radius:20px; font-size:.75rem; font-weight:800; letter-spacing:.05em; text-transform:uppercase; margin-bottom:16px; }
+    .badge-free { background:rgba(76,175,80,.15); color:var(--green); border:1px solid rgba(76,175,80,.3); }
+    .badge-web  { background:rgba(51,153,255,.15); color:var(--blue);  border:1px solid rgba(51,153,255,.3); }
+    .app-title { font-family:'Fredoka One',cursive; font-size:1.5rem; margin-bottom:10px; }
+    .app-desc { font-size:.92rem; color:var(--muted); font-weight:600; margin-bottom:24px; line-height:1.6; }
+    .app-link { display:inline-flex; align-items:center; gap:8px; padding:10px 20px; border-radius:50px; font-size:.9rem; font-weight:800; text-decoration:none; transition:transform .15s; }
+    .app-link:hover { transform:translateY(-2px); }
+    .app-link.android { background:rgba(76,175,80,.15); color:var(--green); border:1px solid rgba(76,175,80,.3); }
+    .app-link.web     { background:rgba(51,153,255,.15); color:var(--blue);  border:1px solid rgba(51,153,255,.3); }
+
+    footer { border-top:1px solid var(--border); padding:32px 20px; text-align:center; }
+    .footer-links { display:flex; gap:24px; justify-content:center; flex-wrap:wrap; margin-bottom:16px; }
+    .footer-links a { color:var(--muted); text-decoration:none; font-size:.9rem; font-weight:600; transition:color .2s; }
+    .footer-links a:hover { color:var(--text); }
+    .footer-copy { font-size:.82rem; color:#444; font-weight:600; }
+
+    @keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+
+    @media(max-width:600px) {
+      .hero { padding:32px 16px 48px; }
+      .section { padding:60px 16px; }
+      .hero-btns { flex-direction:column; align-items:center; }
+      .btn-primary,.btn-secondary { width:100%; max-width:280px; justify-content:center; }
+    }
+  </style>
 </head>
-<!-- FIX 2: Removed hardcoded class="night-mode" — night mode is now
-     applied by startmenu.js based on the saved localStorage preference,
-     so the JS toggle actually works correctly on load. -->
 <body>
 
-<h1>BingoNingo</h1>
-<img src="bingoningo.png" alt="BingoNingo" style="width:100%;max-width:300px;display:block;margin:-20px auto;padding:0;pointer-events:none;user-select:none;-webkit-user-select:none;" />
+<section class="hero">
+  <div class="hero-banner">
+    <img src="bingoningobanner.png" alt="BingoNingo — Free Bingo Player Cards App">
+  </div>
 
-<!-- FIX 8: Buttons wired via addEventListener in startmenu.js
-     instead of inline onclick attributes. -->
-<!-- How it works collapsible -->
-<div class="how-it-works" id="howItWorks">
-  <button class="how-it-works-btn" id="howItWorksBtn" aria-expanded="false" aria-controls="howItWorksBody">
-    ⓘ How it works <span class="how-arrow">▼</span>
-  </button>
-  <div class="how-it-works-body" id="howItWorksBody" hidden>
+  <!-- UPDATED HERO TEXT -->
+  <h1 class="hero-title">BingoNingo</h1>
+  <p class="hero-sub">
+    The free bingo player app for <span>Android</span>.<br>
+    IOS players can use the BingoNingo cards web version instantly — no install needed.
+  </p>
 
-    <p id="howItWorksTextFull">One person opens <strong>Bingo Caller</strong> and runs the game. Other players open <strong>Player Cards</strong> on their phones and mark off numbers as they're called. Use <strong>Print Cards</strong> to generate PDF sheets to hand out.</p>
-    <p id="howItWorksTextFree" style="display:none;">Open <strong>Player Cards</strong> on your phone and mark off numbers as the caller reads them out.</p>
-    <p id="howItWorksHintFree" style="display:none;margin-top:8px;">Buttons and labels with a small <span style="display:inline-flex;align-items:center;justify-content:center;width:11px;height:11px;border-radius:50%;background:rgba(160,180,210,0.7);color:#fff;font-size:6px;font-weight:700;vertical-align:middle;">?</span> indicator can be <strong>pressed and held</strong> for a quick explanation.</p>
-    <p id="howItWorksHintFull" style="margin-top:8px;">Throughout the app, buttons and labels with a small <span style="display:inline-flex;align-items:center;justify-content:center;width:11px;height:11px;border-radius:50%;background:rgba(160,180,210,0.7);color:#fff;font-size:6px;font-weight:700;vertical-align:middle;">?</span> indicator can be <strong>pressed and held</strong> for a quick explanation.</p>
+  <div class="hero-btns">
+    <a href="https://bingoningo.thecrazycat.com/playgame.html" class="btn-primary">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M3 12a9 9 0 1 0 18 0A9 9 0 0 0 3 12zm7.5-3.5 5 3.5-5 3.5V8.5z"/></svg>
+      Play Free Now
+    </a>
+    <a href="https://play.google.com/store/apps/details?id=com.jcat.bingoningo.app.free" class="btn-secondary">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M3.18 23.76a2 2 0 0 0 2.14-.22l11.76-6.78-3.3-3.3-10.6 10.3zm-1.1-20.6v17.68l9.56-8.84L2.08 3.16zm19.4 7.42-2.8-1.62-3.66 3.38 3.66 3.38 2.82-1.64a2 2 0 0 0 0-3.5zM5.32.46A2 2 0 0 0 3.18.22L13.74 10.6l3.3-3.3L5.32.46z"/></svg>
+      Get on Android
+    </a>
+  </div>
+</section>
 
-    <div class="how-play-along">
-      <div class="how-play-platform">
-        <strong>Android</strong><br>
-        Get the app from the<br>
-        <a href="https://play.google.com/store/apps/details?id=com.jcat.bingoningo.app.free" target="_blank" rel="noopener">Play Store</a>
-        <button class="qr-btn" data-qr="help/images/bingoningoplayqr.png" aria-label="Show Play Store QR code">QR</button>
-      </div>
+<section class="section">
+  <p class="section-label">Features</p>
+  <h2 class="section-title">Everything you need to play</h2>
+  <p class="section-desc">BingoNingo gives every player their own digital bingo cards — no paper, no pencils, no fuss.</p>
+  <div class="divider"></div>
 
-      <div class="how-play-platform">
-        <strong>iOS / Web</strong><br>
-        Play on the web at<br>
-        <a href="https://bingoningo.thecrazycat.com/" target="_blank" rel="noopener">bingoningo.thecrazycat.com</a>
-        <button class="qr-btn" data-qr="help/images/bingoningoqr.png" aria-label="Show website QR code">QR</button>
-      </div>
+  <div class="features-grid">
+
+    <div class="feature-card">
+      <span class="feature-icon">🎴</span>
+      <div class="feature-title">Digital Bingo Cards</div>
+      <p class="feature-desc">Pick up to 3 cards from thousands of unique combinations. Tap numbers as they're called — no pen required.</p>
     </div>
 
-    <button class="help-dots-toggle" style="margin-top:8px;"></button>
+    <div class="feature-card">
+      <span class="feature-icon">⚡</span>
+      <div class="feature-title">Quick Pick</div>
+      <p class="feature-desc">Let the app pick 1, 2, or 3 cards instantly. Quick Pick 2 and 3 always choose cards with no repeated numbers between them.</p>
+    </div>
+
+    <div class="feature-card">
+      <span class="feature-icon">🔗</span>
+      <div class="feature-title">Share Codes</div>
+      <p class="feature-desc">Get a unique share code for your selection. Share it with your caller to link your cards to their AutoCheck system.</p>
+    </div>
+
+    <div class="feature-card">
+      <span class="feature-icon">🔍</span>
+      <div class="feature-title">Big Card Mode</div>
+      <p class="feature-desc">Switch to a single large card in landscape for easier number spotting — perfect if you prefer a bigger display.</p>
+    </div>
+
+    <div class="feature-card">
+      <span class="feature-icon">🎨</span>
+      <div class="feature-title">Card Themes</div>
+      <p class="feature-desc">Customise your cards with multiple colour themes — Default dark, Ocean night, Forest, Gold rush, and Purple haze.</p>
+    </div>
+
+    <div class="feature-card">
+      <span class="feature-icon">📱</span>
+      <div class="feature-title">Works Everywhere</div>
+      <p class="feature-desc">Free Android app on Google Play, or use the web version in any browser on iPhone, iPad, or any device.</p>
+    </div>
+
+    <!-- NEW FEATURE: PRINTABLE CARDS -->
+    <div class="feature-card">
+      <span class="feature-icon">🖨️</span>
+      <div class="feature-title">Printable Cards</div>
+      <p class="feature-desc">
+        Create a ready‑to‑print PDF of your selected cards directly in the Android app — perfect for groups or offline play.
+      </p>
+    </div>
 
   </div>
-</div>
+</section>
 
-<div class="menu-buttons">
-  <div class="menu-item" id="menuItemCaller">
-    <button id="btnCaller">Bingo Caller</button>
-    <span class="btn-subtitle">Run the game and call numbers</span>
-    <span class="game-in-progress" id="callerInProgress" style="display:none;">● Game in progress</span>
+<section class="steps-section">
+  <div class="section">
+    <p class="section-label">How it works</p>
+    <h2 class="section-title">Up and playing in seconds</h2>
+    <p class="section-desc">No sign-up. No account. Just open and play.</p>
+    <div class="divider"></div>
+    <div class="steps-grid">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-title">Open the app</div>
+        <p class="step-desc">Launch BingoNingo on Android or open the web version in any browser.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-title">Pick your cards</div>
+        <p class="step-desc">Tap New Game, choose with Quick Pick or browse manually, then confirm.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-title">Share your code</div>
+        <p class="step-desc">Copy your share code and give it to your bingo caller for AutoCheck.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-title">Play!</div>
+        <p class="step-desc">Tap numbers as they're called. Just shout Bingo when you win!</p>
+      </div>
+    </div>
   </div>
-  <div class="menu-item" id="menuItemPlayer">
-    <button id="btnPlayer">Player Cards</button>
-    <span class="btn-subtitle">Play along on your phone</span>
-    <span class="game-in-progress" id="playerInProgress" style="display:none;">● Game in progress</span>
+</section>
+
+<section class="section">
+  <p class="section-label">Get the app</p>
+
+  <!-- UPDATED SECTION DESCRIPTION -->
+  <h2 class="section-title">Free on every platform</h2>
+    <p class="section-desc">
+      Download the full Android app, or use the web version for player cards only for iOS users to play along.
+    </p>
+
+
+  <div class="divider"></div>
+  <div class="apps-grid">
+
+    <div class="app-card featured">
+      <span class="app-badge badge-free">Free</span>
+      <div class="app-title">BingoNingo for Android</div>
+      <p class="app-desc">
+        The full player cards experience. Download free from Google Play — with an optional Remove Ads upgrade.
+      </p>
+      <a href="https://play.google.com/store/apps/details?id=com.jcat.bingoningo.app.free" class="app-link android">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M3.18 23.76a2 2 0 0 0 2.14-.22l11.76-6.78-3.3-3.3-10.6 10.3zm-1.1-20.6v17.68l9.56-8.84L2.08 3.16zm19.4 7.42-2.8-1.62-3.66 3.38 3.66 3.38 2.82-1.64a2 2 0 0 0 0-3.5zM5.32.46A2 2 0 0 0 3.18.22L13.74 10.6l3.3-3.3L5.32.46z"/>
+        </svg>
+        Download on Google Play
+      </a>
+    </div>
+
+    <div class="app-card">
+      <span class="app-badge badge-web">Web</span>
+      <div class="app-title">Play in Browser</div>
+      <p class="app-desc">
+        Use the web version on iPhone, iPad, or any device.  
+        The web version includes the full player cards experience — no install required.  
+        (Caller features are available in the Android app only.)
+      </p>
+      <a href="https://bingoningo.thecrazycat.com" class="app-link web">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+        </svg>
+        Open Web Version
+      </a>
+    </div>
+
   </div>
-  <div class="menu-item" id="menuItemPrint">
-    <button id="btnPrint">Print Cards</button>
-    <span class="btn-subtitle">Generate PDF sheets to hand out</span>
+</section>
+
+<footer>
+  <div class="footer-links">
+    <a href="https://bingoningo.thecrazycat.com">Play Now</a>
+    <a href="https://bingoningo.thecrazycat.com/privacy.html">Privacy Policy</a>
+    <a href="mailto:bingoningo@thecrazycat.com">Contact</a>
   </div>
-</div>
+  <p class="footer-copy">
+    &copy; 2026 TheCrazyCat. BingoNingo is free to play. Contains optional in-app purchases. Contains advertising.
+  </p>
+</footer>
 
-
-
-<!-- FIX 5: startmenu.js is now actually loaded -->
-<link rel="stylesheet" href="changelog-popup.css?v=20260411-113951">
-<link rel="stylesheet" href="help/help-popup.css?v=20260411-113951">
-<script src="help/help-popup.js?v=20260411-113951" defer></script>
-<script src="version.js?v=20260411-113951" defer></script>
-<script src="capacitor.js" defer></script>
-<script src="admob-manager.js?v=20260411-113951"></script>
-<script src="iap-manager.js?v=20260411-113951"></script>
-<script src="back-handler.js?v=20260411-113951" defer></script>
-<script src="changelog.js?v=20260411-113951" defer></script>
-<script src="startmenu.js?v=20260411-113951" defer></script>
-
-<!-- FIX 7: Service worker registration failure shown in console — acceptable
-     for a local game app. No user-visible error needed unless offline support
-     becomes critical. -->
-<script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('service-worker.js')
-        .then(reg => console.log('Service Worker registered', reg))
-        .catch(err => console.warn('Service Worker registration failed:', err));
-    });
-  }
-</script>
-
-<script>
-window.addEventListener('DOMContentLoaded', function () {
-  if (typeof initDotsToggle === 'function') initDotsToggle();
-});
-</script>
-<script>var APP_EDITION="free";</script></body>
+</body>
 </html>
