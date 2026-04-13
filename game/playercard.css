@@ -1,0 +1,1409 @@
+/* ============================= */
+/* Player Bingo Cards CSS        */
+/* Dark Theme & Tap-Friendly     */
+/* ============================= */
+
+
+/* ============================= */
+/* 0. THEME CSS VARIABLES        */
+/* All four card colours are set here and overridden by JS via           */
+/* document.documentElement.style.setProperty() when the user saves.    */
+/* Persisted to localStorage as 'playercard_theme'.                      */
+/* ============================= */
+
+:root {
+  --card-bg:       #1a1a1a;  /* card background (gradient base)       */
+  --card-bg-light: #2a2a2a;  /* card background (gradient highlight)  */
+  --card-cell-bg:  #222222;  /* uncalled cell background              */
+  --card-text:     #eeeeee;  /* uncalled cell number colour           */
+  --card-called:   #ff4d4d;  /* called cell background                */
+  --card-title:    #ff6666;  /* card code title colour                */
+}
+
+
+/* ============================= */
+/* 1. BODY & GLOBAL STYLING      */
+/* ============================= */
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 10px;
+  text-align: center;
+  background-color: var(--bg-page);   /* page UI theme */
+  color: var(--text-primary);          /* page UI theme */
+  padding-top: env(safe-area-inset-top);
+}
+
+/* FIX 6 + FIX 12: Removed !important from entire block and removed outline:none
+   (which was killing keyboard focus rings for accessibility).
+   Normal specificity handles these rules fine without !important.
+   outline:none is only applied to specific elements that need it below. */
+body, button, div, span, label, table, tr, td, ul, li {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* Re-enable text selection for input fields */
+input, textarea {
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
+
+
+/* ============================= */
+/* 2. TOP BUTTONS                */
+/* ============================= */
+
+.top-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;       /* ← add this */
+  gap: 12px;
+  margin-bottom: 12px;
+  padding-top: max(env(safe-area-inset-top), 16px);
+}
+
+.top-buttons button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: var(--btn-bg);    /* page UI theme */
+  color: var(--btn-text);             /* page UI theme */
+  border: 1px solid var(--border);   /* page UI theme */
+  transition: all 0.3s;
+}
+
+.top-buttons button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+
+/* ============================= */
+/* 3. CARD LIST & SELECTION      */
+/* ============================= */
+
+#cardList {
+  width: 100%;
+  /* max-height removed — #cardSelectionWrapper is capped at 90vh with overflow-y:auto,
+     so the list grows naturally within the wrapper without double-constraining */
+  overflow-y: auto;
+  border-radius: 8px;
+  border: 1px solid var(--border);      /* page UI theme */
+  background-color: var(--bg-input);    /* page UI theme */
+  padding: 8px;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
+/* FIX 7 + FIX 8: Consolidated conflicting #cardList label and .card-row label
+   rules into a single coherent set. Previously they set conflicting borders,
+   gaps, and selected state backgrounds that bled into each other. */
+
+/* Base label style for all card rows */
+.card-row label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  flex-grow: 1;
+  padding: 4px 6px;
+  border-radius: 4px;
+  border: 1px solid transparent;
+  color: var(--text-primary);          /* page UI theme */
+  transition: background-color 0.2s, opacity 0.2s;
+  touch-action: manipulation;
+  user-select: none;
+}
+
+.card-row label:hover {
+  background-color: var(--btn-bg);     /* page UI theme */
+}
+
+/* Selected card label — clear green highlight */
+.card-row label.selected {
+  border: 2px solid #41b60a;
+  background-color: #185c07;
+  color: #fff;
+  font-weight: bold;
+  font-size: larger;
+}
+
+/* Disabled card label */
+.card-row label.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: #464646;
+  border: 2px solid #b60a0a;
+}
+
+/* Tap feedback */
+.card-row label:not(.disabled):active {
+  background-color: #006b05;
+  transform: scale(0.98);
+}
+
+.card-row label.selected:not(.disabled):active {
+  background-color: #b71c1c;
+  transform: scale(0.98);
+}
+
+/* Card row container */
+.card-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* FIX 9: Removed dead .card-row .left-group rule — no element with that class
+   is created by the JS */
+
+/* Preview (info) button */
+.preview-btn {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: var(--btn-bg);    /* page UI theme */
+  color: var(--btn-text);             /* page UI theme */
+  border: 1px solid var(--border);   /* page UI theme */
+  cursor: pointer;
+  transition: all 0.2s;
+  outline: none; /* Safe here — it's a small icon button, not a focus-critical control */
+}
+
+.preview-btn.active {
+  background-color: var(--accent);    /* page UI theme */
+  color: #fff;
+}
+
+/* FIX 13: Removed .preview-btn:active { transform: none } that was inconsistently
+   cancelling the global scale feedback. Preview buttons now get the same
+   scale(0.95) treatment as other buttons via the consolidated active block below. */
+
+
+/* ============================= */
+/* 4. CARDS WRAPPER              */
+/* ============================= */
+
+#cardsWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 12px;
+  width: 100%;
+}
+
+
+/* ============================= */
+/* 5. BINGO CARD STYLING         */
+/* ============================= */
+
+.card {
+  border: 2px dashed var(--border);  /* page UI theme */
+  padding: 8px;
+  width: 90%;
+  max-width: 360px;
+  background: linear-gradient(145deg, var(--card-bg), var(--card-bg-light));
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+}
+
+.card h4,
+.card-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin: 4px 0 8px 0;
+  font-size: 20px;
+  color: var(--card-title);
+  text-shadow: 0 0 5px var(--card-title);
+}
+
+.card-tap-hint-spacer {
+  display: none;
+}
+
+.card-tap-hint {
+  position: absolute;
+  right: 0;
+  max-width: 28%;
+  font-size: 9px;
+  font-weight: 400;
+  color: #ff8a65;
+  text-shadow: none;
+  opacity: 0;
+  pointer-events: none;
+  white-space: normal;
+  text-align: right;
+  line-height: 1.2;
+  word-break: break-word;
+}
+
+.card table {
+  width: auto;
+  margin: 0 auto;
+  border-collapse: collapse;
+}
+
+/* Number cells */
+.card td {
+  border: 1px solid var(--border);   /* page UI theme */
+  height: 50px;
+  height: clamp(28px, calc((100svh - 340px) / 9), 50px);
+  width: 50px;
+  width:  clamp(28px, calc((100svh - 340px) / 9), 50px);
+  text-align: center;
+  font-weight: bold;
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.3s;
+  border-radius: 8px;
+  background-color: var(--card-cell-bg);
+  color: var(--card-text);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.card td:hover {
+  box-shadow: 0 0 6px var(--card-called) inset;
+}
+
+.card td.called {
+  background-color: var(--card-called);
+  color: #fff;
+  box-shadow: 0 0 8px var(--card-called) inset;
+}
+
+/* Cell tap highlight animation */
+.card td.highlight {
+  background-color: var(--card-flash, gold);
+  color: black;
+  animation: highlightAnim 0.5s;
+}
+
+@keyframes highlightAnim {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.4); }
+  100% { transform: scale(1); }
+}
+
+/* Undo highlight animation */
+.undo-highlight {
+  background-color: purple !important;
+  color: white !important;
+  animation: undoHighlightAnim 0.5s;
+}
+
+@keyframes undoHighlightAnim {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.4); }
+  100% { transform: scale(1); }
+}
+
+
+/* ============================= */
+/* 6. CARD PREVIEW MINI TABLE    */
+/* ============================= */
+
+.card-preview {
+  display: none;
+  margin: 4px 0 8px 0;
+  border-collapse: collapse;
+  width: auto;
+  max-width: 100%;
+  background-color: var(--bg-cell);   /* page UI theme */
+  border-radius: 6px;
+  /* FIX 11: Removed redundant overflow-x: hidden — overflow: hidden already covers both axes */
+  overflow: hidden;
+}
+
+.card-preview td {
+  border: 1px solid var(--border);   /* page UI theme */
+  height: 24px;
+  width: 24px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-primary);         /* page UI theme */
+  cursor: default;
+}
+
+.card-preview td.called {
+  background-color: var(--card-called);
+  color: #fff;
+}
+
+
+/* ============================= */
+/* 7. QUICK PICK UI              */
+/* ============================= */
+
+#totalCardsLabel {
+  font-size: 12px;
+  color: var(--text-muted);           /* page UI theme */
+  margin: 2px 0 8px 0;
+}
+
+.toggle-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 0;
+}
+
+.random-pick-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin: 8px 0;
+}
+
+.quick-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.quick-pick-btn {
+  padding: 12px 20px;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: var(--btn-bg);    /* page UI theme */
+  color: var(--btn-text);             /* page UI theme */
+  border: 1px solid var(--border);   /* page UI theme */
+  transition: all 0.3s;
+}
+
+.quick-pick-btn:hover {
+  background-color: var(--bg-input);  /* page UI theme */
+}
+
+#randomWarning {
+  color: #ffcc00;
+  font-size: 14px;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+
+/* ============================= */
+/* 8. CONFIRM BUTTON             */
+/* ============================= */
+
+#confirmSelectionBtn {
+  width: 100%;
+  padding: 16px 0;
+  margin-top: 12px;
+  border-radius: 10px;
+  font-size: 18px;
+  background-color: var(--action-btn-bg);   /* page UI theme */
+  color: var(--action-btn-text);             /* page UI theme */
+  border: 1px solid var(--action-btn-bg);   /* page UI theme */
+  cursor: pointer;
+}
+
+#confirmSelectionBtn:hover {
+  filter: brightness(0.9);
+}
+
+
+/* ============================= */
+/* 9. INFO ICON + POPOVER        */
+/* ============================= */
+
+.info-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* FIX 2: Merged .info-icon and button.info-icon into one rule.
+   The base had border-radius: 12px, the button override had 50% with !important.
+   Since the element is always a button, just define it correctly once. */
+.info-icon {
+  background-color: var(--btn-bg);    /* page UI theme */
+  color: var(--btn-text);             /* page UI theme */
+  border: 1px solid var(--border);   /* page UI theme */
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+  outline: none;
+}
+
+.info-icon:hover {
+  background-color: var(--bg-input);  /* page UI theme */
+}
+
+.popover {
+  position: fixed;
+  top: 0;
+  left: 0;
+  transform: translateY(-5px);
+  background-color: var(--bg-surface); /* page UI theme */
+  color: var(--text-primary);          /* page UI theme */
+  border: 1px solid var(--border);    /* page UI theme */
+  border-radius: 8px;
+  padding: 10px 14px;
+  width: 260px;
+  max-width: 80vw;
+  max-height: 50vh;
+  overflow-y: auto;
+  z-index: 2000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+  font-size: 13px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.popover::after {
+  content: '';
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 32px;
+  display: block;
+  background: linear-gradient(to bottom, transparent, var(--bg-surface)); /* page UI theme */
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+
+.popover.scrolled-to-bottom::after {
+  opacity: 0;
+}
+
+.popover.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0) translateY(0);
+}
+
+.popover .arrow {
+  position: absolute;
+  top: -8px;
+  left: 0;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 8px solid var(--bg-surface); /* page UI theme */
+}
+
+.popover h4 {
+  margin: 0 0 8px 0;
+  font-size: 16px;
+  color: var(--accent);               /* page UI theme */
+  text-align: left;
+}
+
+.popover ul {
+  padding-left: 18px;
+  margin: 0;
+  list-style-type: disc;
+  text-align: left;
+}
+
+.popover ul li {
+  margin-bottom: 6px;
+}
+
+
+/* ============================= */
+/* 10. SEARCH INPUT & CLEAR BTN  */
+/* ============================= */
+
+.search-wrapper {
+  position: relative;
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+#searchInput {
+  width: 100%;
+  padding: 8px 32px 8px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--border);   /* page UI theme */
+  background-color: var(--bg-input); /* page UI theme */
+  color: var(--text-primary);         /* page UI theme */
+  box-sizing: border-box;
+  font-size: 16px;
+}
+
+#clearSearchBtn {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  color: #aaa;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 4px;
+  outline: none; /* Safe — purely decorative icon button */
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Use @media hover: hover so the colour change only applies on devices
+   that genuinely support hover (desktop mice). On touch devices :hover
+   gets "stuck" after a tap — this prevents that. */
+@media (hover: hover) {
+  #clearSearchBtn:hover {
+    color: #ff0000;
+  }
+}
+
+/* :active fires and clears cleanly on both desktop and mobile */
+#clearSearchBtn:active {
+  color: #ff0000;
+}
+
+/* FIX 4: Removed dead .search-wrapper input and .search-wrapper button rules.
+   #searchInput and #clearSearchBtn are fully styled by their ID selectors above.
+   The class-based rules were never applied (lower specificity, same element). */
+
+
+/* ============================= */
+/* 11. CARD SELECTION MODAL      */
+/* ============================= */
+
+/* FIX 2 (HTML): Initial hidden state as a CSS class rather than inline style,
+   so it doesn't fight stylesheet rules. JS toggles this class on/off. */
+#cardSelectionWrapper {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 420px;
+  max-width: 95vw;
+  /* Cap height so the wrapper never exceeds the viewport, and scroll internally */
+  max-height: 90vh;
+  overflow-y: auto;
+  background-color: var(--bg-surface); /* page UI theme */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px;
+  box-sizing: border-box;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+}
+
+
+
+/* ============================= */
+/* 12. BINGO WIN TEXT            */
+/* ============================= */
+
+/* FIX 1: Changed position from absolute to fixed so the win text overlays
+   the viewport correctly regardless of scroll position or parent transforms.
+   FIX 5: Removed color/text-shadow from here — JS overwrites them inline
+   immediately anyway, so the CSS values were misleading dead code.
+   FIX 14 (from JS): Added .bingo-active class so JS can trigger the animation
+   with a class toggle instead of direct style manipulation. */
+#bingoText {
+  position: fixed;
+  font-size: 36px;
+  font-weight: bold;
+  display: none;
+  z-index: 1000;
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(0.5);
+  opacity: 0;
+  transition: transform 0.6s ease, opacity 0.6s ease;
+  text-align: center;
+}
+
+/* Active state triggered by JS adding .bingo-active class */
+#bingoText.bingo-active {
+  display: block;
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1.5);
+}
+
+
+/* ============================= */
+/* 15. THEME PANEL               */
+/* ============================= */
+
+#themePanelWrapper {
+  position: fixed;
+
+  top: 10px;
+  left: auto; /* keep your JS positioning if you use it */
+
+  width: 185px;
+
+  max-height: 80dvh;   /* KEY: cap height */
+  height: auto;        /* allow shrink-to-fit */
+
+  background: var(--bg-surface);      /* page UI theme */
+  border: 1px solid var(--border);   /* page UI theme */
+  border-radius: 10px;
+
+  padding: 9px;
+  box-sizing: border-box;
+
+  z-index: 500;
+
+  display: flex;
+  flex-direction: column;
+
+  overflow: hidden; /* prevents outer scroll + removes fake space */
+}
+
+.theme-scroll {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  min-height: 0;
+}
+
+.theme-presets,
+.theme-swatches {
+  overflow: visible;
+}
+
+#themePanelWrapper {
+  overflow: hidden;
+}
+
+#themePanelWrapper > .theme-presets,
+#themePanelWrapper > .theme-swatches {
+  overflow-y: auto;
+}
+
+.theme-panel-header {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 7px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border); /* page UI theme */
+}
+
+.theme-panel-title {
+  font-size: 12px;
+  font-weight: bold;
+  color: var(--text-primary);          /* page UI theme */
+  flex: 1;
+}
+
+#closeThemeBtn {
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  border: 1px solid var(--border);   /* page UI theme */
+  background: var(--bg-input);       /* page UI theme */
+  color: var(--text-muted);           /* page UI theme */
+  font-size: 9px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+  flex-shrink: 0;
+}
+
+#closeThemeBtn:hover {
+  background: var(--btn-bg);          /* page UI theme */
+  color: var(--text-primary);          /* page UI theme */
+}
+
+.theme-section-label {
+  font-size: 9px;
+  color: var(--text-muted);           /* page UI theme */
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 6px 0 3px 0;
+}
+
+/* Preset buttons — single column, compact single-line rows */
+.theme-presets {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.theme-preset-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 6px;
+  border-radius: 5px;
+  border: 1px solid var(--bg-cell);   /* page UI theme */
+  background: transparent;
+  cursor: pointer;
+  font-size: 11px;
+  color: var(--btn-text);             /* page UI theme */
+  white-space: nowrap;
+  width: 100%;
+  transition: background 0.15s, border-color 0.15s;
+  text-align: left;
+}
+
+.theme-preset-btn:hover {
+  background: var(--bg-cell);         /* page UI theme */
+}
+
+.theme-preset-btn.active {
+  border-color: #ff6666;
+  background: #1e1212;
+  color: #fff;
+}
+
+.theme-preset-dots {
+  display: flex;
+  gap: 3px;
+  flex-shrink: 0;
+}
+
+.theme-preset-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.1);
+  flex-shrink: 0;
+}
+
+/* Swatch rows */
+.theme-swatches {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.theme-swatch {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: transform 0.12s, border-color 0.12s;
+  flex-shrink: 0;
+}
+
+.theme-swatch:hover {
+  transform: scale(1.2);
+}
+
+.theme-swatch.active {
+  border-color: #fff;
+  box-shadow: 0 0 4px rgba(255,255,255,0.35);
+}
+
+/* #saveThemeBtn removed — card theme now auto-saves on every change (step 6) */
+
+/* Theme trigger button (sits beside info button) */
+#themeBtn {
+  background-color: var(--btn-bg);    /* page UI theme */
+  color: var(--btn-text);             /* page UI theme */
+  border: 1px solid var(--border);   /* page UI theme */
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+  font-size: 16px;
+  outline: none;
+}
+
+#themeBtn:hover {
+  background-color: var(--bg-input);  /* page UI theme */
+}
+
+#themeBtn.active {
+  background-color: var(--accent);    /* page UI theme */
+  border-color: var(--accent);        /* page UI theme */
+}
+
+
+/* ============================= */
+/* 14. CONFIRM MODAL             */
+/* FIX 12: Replaces inline styles previously set in showConfirmModal() */
+/* ============================= */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  padding-top: env(safe-area-inset-top, 0px);
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.modal-box {
+  background: var(--bg-surface);      /* page UI theme */
+  color: var(--text-primary);          /* page UI theme */
+  border-radius: 12px;
+  padding: 28px 32px;
+  max-width: 320px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  font-family: inherit;
+  font-size: 1.1rem;
+  max-height: calc(100svh - 40px);
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.modal-message {
+  margin-bottom: 20px;
+}
+
+.modal-btn-row {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.modal-btn {
+  padding: 10px 24px;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.modal-btn--confirm {
+  background: #e94560;
+}
+
+.modal-btn--confirm:hover {
+  background: #c73650;
+}
+
+.modal-btn--cancel {
+  background: var(--btn-bg);          /* page UI theme */
+}
+
+.modal-btn--cancel:hover {
+  background: var(--bg-input);        /* page UI theme */
+}
+
+/* ============================= */
+
+/* FIX 3: Added :not(:disabled) guard so disabled buttons don't flash limegreen.
+   FIX 13: Removed the .preview-btn:active { transform: none } override —
+   preview buttons now get consistent scale feedback like all other buttons. */
+button:not(:disabled):active,
+.quick-pick-btn:not(:disabled):active,
+.preview-btn:not(:disabled):active,
+#confirmSelectionBtn:not(:disabled):active,
+.info-icon:not(:disabled):active {
+  transform: scale(0.95);
+  background-color: limegreen;
+  color: #fff;
+  transition: transform 0.1s, background-color 0.2s;
+}
+
+/* New Game button glows red when enabled */
+#newGameBtn:not(:disabled) {
+  background-color: red;
+  animation: glowPulse 1s infinite ease-in-out;
+}
+
+@keyframes glowPulse {
+  0%   { box-shadow: 0 0 5px #ff0000;  transform: scale(1); }
+  50%  { box-shadow: 0 0 15px #ff4444; transform: scale(1.05); }
+  100% { box-shadow: 0 0 5px #ff0000;  transform: scale(1); }
+}
+
+
+/* Confirm selection pulses when max cards selected */
+#confirmSelectionBtn.pulse {
+  animation: confirmPulse 0.8s infinite ease-in-out;
+  background-color: #ff6666;
+}
+
+@keyframes confirmPulse {
+  0%   { box-shadow: 0 0 5px #ff6666;  transform: scale(1); }
+  50%  { box-shadow: 0 0 18px #ff4444; transform: scale(1.03); }
+  100% { box-shadow: 0 0 5px #ff6666;  transform: scale(1); }
+}
+
+/* ============================= */
+/* 16. SLIDER TOGGLE             */
+/* ============================= */
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 42px;
+  height: 22px;
+}
+
+.switch input { display: none; }
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background-color: #ccc;
+  transition: 0.3s;
+  border-radius: 22px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 2px;
+  bottom: 2px;
+  background-color: white;
+  transition: 0.3s;
+  border-radius: 50%;
+}
+
+input:checked + .slider { background-color: #4caf50; }
+input:checked + .slider:before { transform: translateX(20px); }
+input:disabled + .slider { opacity: 0.4; cursor: not-allowed; }
+
+
+/* ============================= */
+/* 17. SHARE CODE ROW            */
+/* ============================= */
+
+.share-code-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 6px 0;
+  padding: 0 2px;
+}
+
+.share-code-label {
+  font-size: 13px;
+  color: var(--text-muted);           /* page UI theme */
+  line-height: 1.3;
+  flex-shrink: 0;
+}
+
+.share-code-pill {
+  background: var(--bg-page);         /* page UI theme */
+  border: 1px solid var(--bg-cell);  /* page UI theme */
+  border-radius: 8px;
+  padding: 7px 11px;
+  font-family: monospace;
+  font-size: 24px;
+  letter-spacing: 0.16em;
+  color: var(--text-primary);         /* page UI theme */
+  cursor: pointer;
+  flex: 1;
+  text-align: center;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.share-code-pill.share-code-copied {
+  border-color: #4caf50;
+  color: #4caf50;
+  letter-spacing: normal;
+  font-size: 16px;
+}
+
+.share-code-pill.share-code-empty {
+  color: var(--text-faint);           /* page UI theme */
+  letter-spacing: normal;
+}
+
+/* QR button inside share-code-row */
+.share-qr-btn {
+  flex-shrink: 0;
+  background: #1a3a1a;
+  border: 1px solid #4caf50;
+  border-radius: 8px;
+  color: #4caf50;
+  padding: 7px 9px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+}
+.share-qr-btn:disabled {
+  border-color: #333;
+  color: #444;
+  background: #111;
+  cursor: default;
+}
+.share-qr-btn:not(:disabled):active { background: #2a5a2a; }
+
+/* QR button in top bar — same size as themeBtn */
+#qrBtn {
+  background: #1a3a1a;
+  border: 1px solid #4caf50;
+  border-radius: 8px;
+  color: #4caf50;
+  padding: 4px 7px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+}
+#qrBtn:disabled {
+  border-color: #333;
+  color: #444;
+  background: transparent;
+  cursor: default;
+}
+#qrBtn:not(:disabled):active { background: #2a5a2a; }
+
+/* ========================
+   BIG CARD MODE
+   ======================== */
+
+/* Disabled state for Quick Pick 2/3 when Big Card Mode is on */
+.quick-pick-btn.big-card-disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Toggle row greyed when Big Card Mode toggle is disabled */
+.big-card-toggle-disabled {
+  opacity: 0.5;
+}
+.big-card-toggle-disabled label {
+  cursor: not-allowed;
+}
+
+/* Big card wrapper — fills the available viewport */
+.big-card-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 6px;
+  background: var(--card-bg, #1a1a1a);
+  border-radius: 10px;
+}
+
+/* Header row inside big card */
+.big-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 8px;
+  flex-shrink: 0;
+}
+
+.big-card-share-code {
+  font-family: monospace;
+  font-size: 11px;
+  color: #888;
+  letter-spacing: 0.05em;
+}
+
+.big-card-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--card-title, #ff6666);
+  text-align: center;
+  flex: 1;
+}
+
+/* Big card table — fills all remaining height */
+.big-card-table {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.big-card-table td {
+  text-align: center;
+  vertical-align: middle;
+  font-size: clamp(20px, 5vw, 42px);
+  font-weight: bold;
+  color: var(--card-text, #eeeeee);
+  background: var(--card-cell-bg, #222);
+  border: 1px solid var(--card-bg, #1a1a1a);
+  border-radius: 4px;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.1s, transform 0.1s;
+}
+
+.big-card-table td.called {
+  background: var(--card-called, #ff4d4d);
+  color: #fff;
+}
+
+.big-card-table td.highlight {
+  transform: scale(1.06);
+}
+
+.big-card-table td.undo-highlight {
+  background: #555;
+  transform: scale(1.06);
+}
+
+/* Empty cells in big card */
+.big-card-table td:empty {
+  background: transparent;
+  border-color: transparent;
+  cursor: default;
+}
+
+
+/* ========================
+   BIG CARD MODE — FULL VIEWPORT LOCK
+   When big card is active the whole page becomes a fixed flex column.
+   Nothing scrolls — everything fits exactly in the viewport.
+   ======================== */
+
+body.big-card-active {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+body.big-card-active .top-buttons {
+  flex-shrink: 0;
+  margin-bottom: 0;
+  padding: max(env(safe-area-inset-top), 4px) 8px 4px;
+  gap: 8px;
+}
+
+/* Shrink top buttons in big card mode so they take minimal vertical space */
+body.big-card-active .top-buttons button {
+  padding: 6px 12px;
+  font-size: 13px;
+}
+
+body.big-card-active #cardsWrapper {
+  flex: 1;
+  min-height: 0;
+  margin-top: 0;
+  width: 100%;
+  overflow: hidden;
+}
+
+body.big-card-active .big-card-wrapper {
+  height: 100%;
+  padding: 4px 6px 4px;
+  box-sizing: border-box;
+  border-radius: 6px;
+}
+
+body.big-card-active .big-card-header {
+  padding: 2px 6px;
+}
+
+body.big-card-active .big-card-title {
+  font-size: clamp(12px, 3vw, 20px);
+}
+
+body.big-card-active .big-card-share-code {
+  font-size: clamp(8px, 1.8vw, 11px);
+}
+
+
+/* ============================= */
+/* HOME BUTTON                   */
+/* ============================= */
+
+.player-home-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  border: 1px solid #555;
+  background: #444;
+  color: #aaa;
+  text-decoration: none;
+  flex-shrink: 0;
+  transition: background 0.2s;
+}
+.player-home-btn:hover { background: #555; color: #eee; }
+
+
+/* ============================= */
+/* TWO-LINE BUTTONS              */
+/* ============================= */
+
+.top-buttons .two-line-btn {
+  line-height: 1.2;
+  padding: 6px 14px;
+  font-size: 14px;
+}
+
+
+/* ============================= */
+/* STEPS TEXT                    */
+/* ============================= */
+
+
+.steps-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 16px 10px;
+  margin: 0 auto 8px;
+  max-width: 400px;
+  border: 1px solid var(--border);   /* page UI theme */
+  border-radius: 8px;
+  background: var(--bg-page);         /* page UI theme */
+  position: relative;
+}
+
+.steps-row {
+  display: flex;
+  gap: 8px;
+  padding: 3px 0;
+  font-size: 12px;
+  color: var(--text-muted);           /* page UI theme */
+  width: 100%;
+  border-bottom: 1px solid var(--bg-surface); /* page UI theme */
+}
+.steps-row:last-child { border-bottom: none; }
+
+.steps-num {
+  color: var(--text-faint);           /* page UI theme */
+  min-width: 50px;
+  font-size: 11px;
+  flex-shrink: 0;
+}
+
+
+/* ============================= */
+/* SHARE CODE COPY HINT          */
+/* ============================= */
+
+.share-code-copy-hint {
+  font-size: 11px;
+  color: #555;
+  text-align: center;
+  margin: 3px 0 8px;
+}
+
+
+/* ============================= */
+/* SELECTION TOGGLE HINTS        */
+/* ============================= */
+
+.selection-toggle-hint {
+  font-size: 11px;
+  color: #5b8af5;
+  padding: 4px 4px 6px;
+  border-bottom: 1px solid #222;
+  line-height: 1.5;
+}
+
+
+/* ============================= */
+/* DOUBLE-TAP HINT               */
+/* ============================= */
+
+.double-tap-hint {
+  text-align: center;
+  font-size: 11px;
+  color: #555;
+  padding: 8px 0 4px;
+}
+
+/* ============================= */
+/* WEB ADSENSE BANNER OFFSET     */
+/* body class injected by web    */
+/* build bat — never on Android  */
+/* ============================= */
+body.has-ad-banner .card td {
+  height: clamp(22px, calc((100svh - 410px) / 9), 50px);
+  width:  clamp(22px, calc((100svh - 410px) / 9), 50px);
+  font-size: 14px;
+}
+
+body.has-ad-banner .card {
+  max-width: 100%;
+}
+
+body.has-ad-banner #cardsWrapper {
+  padding-bottom: 65px;
+}
+
+body.has-ad-banner .version-label {
+  bottom: 70px !important;
+}
+
+body.has-ad-banner #cardsWrapper {
+  padding-bottom: 65px;
+}
+
+body.has-ad-banner.big-card-active #cardsWrapper {
+  padding-bottom: 65px;
+}
+
+/* Theme panel: stop at top of banner, fully scrollable above it */
+body.has-ad-banner #themePanelWrapper {
+  max-height: calc(100dvh - 130px);
+}
+
+/* QR / confirm modals: centre content in the visible area above banner */
+body.has-ad-banner .modal-overlay {
+  padding-bottom: 60px;
+}
+
+
+/* Cat pointing */
+
+/* Pull the cat OUT of the flex flow and position it freely */
+.steps-cat-row {
+  display: flex;
+  justify-content: center;   /* center the cat */
+  padding: 0;
+  margin-bottom: 6px;
+  border-bottom: none;       /* no divider line */
+}
+
+.steps-cat-img {
+  width: 400px;              /* adjust as needed */
+  height: auto;
+  max-width: none;
+  flex-shrink: 0;
+}

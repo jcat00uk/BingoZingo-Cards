@@ -1,1 +1,1 @@
-const APP_VERSION="20260412-182414",APP_EDITION="free",APP_BUILD_MODE="debug",APP_ADS="true";
+const APP_VERSION = '20260413-185334'; const APP_EDITION = 'free'; const APP_BUILD_MODE = 'debug'; const APP_ADS = 'true'; 
