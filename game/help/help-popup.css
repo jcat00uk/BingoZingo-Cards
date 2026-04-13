@@ -1,0 +1,326 @@
+/* =============================================
+   BingoNingo Help System — help-popup.css
+   Indicator dots + popup overlay
+   ============================================= */
+
+/* ── INDICATOR DOT ──────────────────────────── */
+/* Applied to positioned elements (buttons etc) */
+.help-available {
+  position: relative;
+}
+
+.help-available::after {
+  content: '?';
+  position: absolute;
+  bottom: 3px;
+  right: 4px;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: rgba(160, 180, 210, 0.30);
+  color: rgba(255, 255, 255, 0.50);
+  font-size: 7px;
+  font-weight: 700;
+  line-height: 13px;
+  text-align: center;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* Variant for light backgrounds (printCards page) */
+.help-available.light-bg::after {
+  background: rgba(80, 110, 160, 0.30);
+  color: rgba(0, 0, 0, 0.50);
+}
+
+/* ── INLINE DOT ─────────────────────────────── */
+/* Injected as a <span> after label text */
+.help-dot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(160, 180, 210, 0.30);
+  color: rgba(255, 255, 255, 0.50);
+  font-size: 7px;
+  font-weight: 700;
+  line-height: 1;
+  margin-left: 5px;
+  vertical-align: middle;
+  flex-shrink: 0;
+  cursor: help;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Variant for light backgrounds (printCards page) */
+.help-dot.light-bg {
+  background: rgba(80, 110, 160, 0.30);
+  color: rgba(0, 0, 0, 0.50);
+}
+
+/* ── OVERLAY BACKDROP ───────────────────────── */
+#helpOverlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 9000;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#helpOverlay.visible {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  animation: helpFadeIn 0.18s ease;
+}
+
+@keyframes helpFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── POPUP PANEL ────────────────────────────── */
+#helpPopup {
+  background: #1c1c1e;
+  border: 1px solid #2e2e32;
+  border-bottom: none;
+  border-radius: 16px 16px 0 0;
+  width: 100%;
+  max-width: 520px;
+  max-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 -4px 24px rgba(0,0,0,0.5);
+  animation: helpSlideUp 0.22s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+@keyframes helpSlideUp {
+  from { transform: translateY(60px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+/* ── POPUP HEADER ───────────────────────────── */
+#helpPopupHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px 10px;
+  border-bottom: 1px solid #2e2e32;
+  flex-shrink: 0;
+}
+
+#helpPopupTitle {
+  font-size: 15px;
+  font-weight: 700;
+  color: #a0b4d2;
+  letter-spacing: 0.01em;
+}
+
+#helpPopupClose {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #2e2e32;
+  border: none;
+  color: #888;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  padding: 0;
+  line-height: 1;
+}
+
+/* ── POPUP BODY (scrollable) ────────────────── */
+#helpPopupBody {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 14px 16px 20px;
+  flex: 1;
+}
+
+#helpPopupBody p {
+  font-size: 13px;
+  color: #aaa;
+  line-height: 1.65;
+  margin: 0 0 10px;
+}
+
+#helpPopupBody p:last-child {
+  margin-bottom: 0;
+}
+
+#helpPopupBody strong {
+  color: #ddd;
+  font-weight: 600;
+}
+
+#helpPopupBody ul {
+  margin: 6px 0 10px 0;
+  padding-left: 18px;
+}
+
+#helpPopupBody li {
+  font-size: 13px;
+  color: #aaa;
+  line-height: 1.6;
+  margin-bottom: 4px;
+}
+
+/* ── POPUP IMAGE ────────────────────────────── */
+#helpPopupImage {
+  display: block;
+  width: 100%;
+  max-width: 340px;
+  margin: 10px auto 12px;
+  border-radius: 8px;
+  border: 1px solid #2e2e32;
+  cursor: zoom-in;
+  touch-action: auto;
+  -webkit-touch-callout: none;
+}
+
+#helpPopupImage::after {
+  content: '';
+}
+
+/* ── IMAGE FULLSCREEN OVERLAY ───────────────── */
+#helpImageOverlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.92);
+  z-index: 9500;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+#helpImageOverlay.visible {
+  display: flex;
+  animation: helpFadeIn 0.2s ease;
+}
+
+#helpImageOverlay img {
+  max-width: 100%;
+  max-height: 100%;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  object-fit: contain;
+  cursor: zoom-out;
+}
+
+#helpImageOverlayClose {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  border: none;
+  color: #fff;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 9501;
+}
+
+.help-image-hint {
+  display: block;
+  text-align: center;
+  font-size: 11px;
+  color: rgba(160, 180, 210, 0.7);
+  margin: -4px auto 10px;
+  letter-spacing: 0.02em;
+}
+
+/* ── DRAG HANDLE ────────────────────────────── */
+#helpPopup::before {
+  content: '';
+  display: block;
+  width: 36px;
+  height: 4px;
+  background: #3a3a3e;
+  border-radius: 2px;
+  margin: 10px auto 0;
+  flex-shrink: 0;
+}
+
+/* ── FIRST-VISIT HINT ───────────────────────── */
+#helpFirstVisitHint {
+  position: fixed;
+  bottom: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1a2a1a;
+  border: 1px solid #2a4a2a;
+  border-radius: 16px;
+  padding: 8px 16px;
+  font-size: 12px;
+  color: #7ab870;
+  white-space: normal;
+  width: max-content;
+  max-width: calc(100vw - 32px);
+  z-index: 8999;
+  display: block;
+  line-height: 1.8;
+  text-align: center;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+  animation: helpHintIn 0.3s ease, helpHintOut 0.5s ease 4s forwards;
+  pointer-events: none;
+}
+
+@keyframes helpHintIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(10px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+@keyframes helpHintOut {
+  to { opacity: 0; }
+}
+
+/* ── HIDE ALL DOTS toggle ───────────────────── */
+body.help-dots-hidden .help-dot,
+body.help-dots-hidden .help-available::after,
+body.help-dots-hidden #winTypeHelpDot {
+  display: none !important;
+}
+
+/* ── DOTS TOGGLE BUTTON ─────────────────────── */
+.help-dots-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--color-text-secondary, #888);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 0;
+  margin-top: 6px;
+  opacity: 0.7;
+}
+.help-dots-toggle:hover { opacity: 1; }
+.help-dots-toggle .toggle-dot-sample {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(160, 180, 210, 0.30);
+  color: rgba(255,255,255,0.50);
+  font-size: 7px;
+  font-weight: 700;
+  flex-shrink: 0;
+}

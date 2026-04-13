@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Player Bingo Cards</title>
+  <link rel="stylesheet" href="playercard.css?v=.0.0">
+</head>
+<body class="has-ad-banner">
+
+<!-- Top buttons -->
+<div class="top-buttons">
+  <!-- Home button — unlocks orientation before navigating -->
+  <a href="index.html" id="homeBtn" class="home-btn player-home-btn" title="Home">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" style="display:block;"><path d="M8 1L1 7v8h5v-5h4v5h5V7L8 1z"/></svg>
+  </a>
+  <div class="info-container">
+    <button id="infoBtn" class="info-icon" title="How to play">i</button>
+    <div id="infoPopover" class="popover">
+      <div class="arrow"></div>
+      <h4>How to Play</h4>
+      <ul>
+        <li>Click <strong>New Game</strong> to start a new game.</li>
+        <li>Use the <strong>Quick Pick</strong> buttons to automatically pick 1, 2, or 3 cards. <strong>Quick Pick 2</strong> and <strong>Quick Pick 3</strong> always pick cards with no repeated numbers between them.</li>
+        <li>Enable <strong>Big Card Mode</strong> (below the total cards count) before selecting a card to lock to a single large card display. In Big Card Mode only 1 card can be selected — Quick Pick 2 and 3 are disabled. On mobile, the card switches to landscape for easier reading.</li>
+        <li>Once you have selected cards, your <strong>share code</strong> appears below the Quick Pick buttons. Tap the code to copy it and share with your caller so they can load your cards into AutoCheck. Tap the <strong>QR button</strong> next to the code to show a fullscreen QR code your caller can scan directly.</li>
+        <li>By default only your selected cards are shown. Turn on <strong>Advanced Selection</strong> to browse and search all available cards manually.</li>
+        <li>In Advanced mode, cards are sorted by how many numbers they share with your current selection — fewer shared numbers appear first. Cards with 6 or more shared numbers are greyed out and blocked.</li>
+        <li>Cards showing an amber <strong>X shared</strong> label have some overlapping numbers — they can still be selected but some numbers will appear on more than one of your cards.</li>
+        <li>If a number appears on more than one of your cards, tapping it will automatically mark it on all your cards.</li>
+        <li>Click <strong>Confirm Selection</strong> to load your cards.</li>
+        <li>Tap <strong>🎨</strong> to change the card theme — pick a preset or customise the background, number, highlight and title colours individually. Tap <strong>Save theme</strong> to keep your changes. The <strong>QR button</strong> next to 🎨 lets you show your share code and QR to the caller at any time during the game — it is greyed out until cards are confirmed.</li>
+        <li>Single click/tap a number to mark it.</li>
+        <li>Double click/tap a number to undo it.</li>
+        <li>Click <strong>End Game</strong> to finish.</li>
+        <li>Any questions? Ask a fellow player!</li>
+        <li>Press and hold any button or label with a small <span style="display:inline-flex;align-items:center;justify-content:center;width:11px;height:11px;border-radius:50%;background:rgba(160,180,210,0.7);color:#fff;font-size:6px;font-weight:700;vertical-align:middle;">?</span> indicator for a quick explanation of that feature.</li>
+      </ul>
+      <button class="help-dots-toggle"></button>
+    </div>
+  </div>
+  <button id="themeBtn" title="Card theme">🎨</button>
+  <button id="qrBtn" title="Show share code & QR" disabled>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="display:block;">
+      <rect x="2" y="2" width="8" height="8" rx="1"/>
+      <rect x="14" y="2" width="8" height="8" rx="1"/>
+      <rect x="2" y="14" width="8" height="8" rx="1"/>
+      <rect x="16" y="16" width="6" height="6" rx="1" fill="currentColor" stroke="none"/>
+    </svg>
+  </button>
+  <button id="newGameBtn" title="Start a new game" class="two-line-btn">New<br>Game</button>
+  <button id="endGameBtn" disabled title="End the current game" class="two-line-btn">End<br>Game</button>
+</div>
+
+<!-- Steps — visible before New Game, hidden once game starts -->
+<div id="stepsText" class="steps-text">
+<div class="steps-row steps-cat-row">
+  <img src="cat-pointing.png" class="steps-cat-img" alt="Cat Pointing">
+</div>
+  <div class="steps-row"><span class="steps-num">Step 1:</span><span>Click New Game</span></div>
+  <div class="steps-row"><span class="steps-num">Step 2:</span><span>Pick your cards</span></div>
+  <div class="steps-row"><span class="steps-num">Step 3:</span><span>Share your code with the caller</span></div>
+  <div class="steps-row"><span class="steps-num">Step 4:</span><span>Confirm and play</span></div>
+</div>
+
+<!-- Theme panel -->
+<div id="themePanelWrapper" style="display:none;">
+  <div class="theme-panel-header">
+    <span>🎨</span>
+    <span class="theme-panel-title">Card theme</span>
+    <button id="closeThemeBtn" title="Close">✕</button>
+  </div>
+    <!-- 🔥 ADD THIS WRAPPER -->
+  <div class="theme-scroll">
+
+  <div class="theme-section-label">Presets</div>
+  <div class="theme-presets">
+    <button class="theme-preset-btn active" data-preset="dark">
+      <div class="theme-preset-dots">
+        <div class="theme-preset-dot" style="background:#1a1a1a"></div>
+        <div class="theme-preset-dot" style="background:#222"></div>
+        <div class="theme-preset-dot" style="background:#ff4d4d"></div>
+        <div class="theme-preset-dot" style="background:#ff6666"></div>
+      </div>
+      <span>Default dark</span>
+    </button>
+    <button class="theme-preset-btn" data-preset="ocean">
+      <div class="theme-preset-dots">
+        <div class="theme-preset-dot" style="background:#0a1628"></div>
+        <div class="theme-preset-dot" style="background:#122040"></div>
+        <div class="theme-preset-dot" style="background:#4dd0e1"></div>
+        <div class="theme-preset-dot" style="background:#4dd0e1"></div>
+      </div>
+      <span>Ocean night</span>
+    </button>
+    <button class="theme-preset-btn" data-preset="forest">
+      <div class="theme-preset-dots">
+        <div class="theme-preset-dot" style="background:#0d1f0e"></div>
+        <div class="theme-preset-dot" style="background:#1a3a1c"></div>
+        <div class="theme-preset-dot" style="background:#69f07a"></div>
+        <div class="theme-preset-dot" style="background:#69f07a"></div>
+      </div>
+      <span>Forest</span>
+    </button>
+    <button class="theme-preset-btn" data-preset="gold">
+      <div class="theme-preset-dots">
+        <div class="theme-preset-dot" style="background:#1c1400"></div>
+        <div class="theme-preset-dot" style="background:#2e2100"></div>
+        <div class="theme-preset-dot" style="background:#ffd54f"></div>
+        <div class="theme-preset-dot" style="background:#ffd54f"></div>
+      </div>
+      <span>Gold rush</span>
+    </button>
+    <button class="theme-preset-btn" data-preset="purple">
+      <div class="theme-preset-dots">
+        <div class="theme-preset-dot" style="background:#1a0a2e"></div>
+        <div class="theme-preset-dot" style="background:#2a1040"></div>
+        <div class="theme-preset-dot" style="background:#ce93d8"></div>
+        <div class="theme-preset-dot" style="background:#ba68c8"></div>
+      </div>
+      <span>Purple haze</span>
+    </button>
+  </div>
+
+  <div class="theme-section-label">Card background</div>
+  <div class="theme-swatches" id="swBg">
+    <div class="theme-swatch active" style="background:#1a1a1a" data-val="#1a1a1a"></div>
+    <div class="theme-swatch" style="background:#0a1628" data-val="#0a1628"></div>
+    <div class="theme-swatch" style="background:#0d1f0e" data-val="#0d1f0e"></div>
+    <div class="theme-swatch" style="background:#1c1400" data-val="#1c1400"></div>
+    <div class="theme-swatch" style="background:#1a0a2e" data-val="#1a0a2e"></div>
+    <div class="theme-swatch" style="background:#2a2a2a" data-val="#2a2a2a"></div>
+    <div class="theme-swatch" style="background:#1a0a0a" data-val="#1a0a0a"></div>
+    <div class="theme-swatch" style="background:#0a1a1a" data-val="#0a1a1a"></div>
+  </div>
+
+  <div class="theme-section-label">Number text</div>
+  <div class="theme-swatches" id="swText">
+    <div class="theme-swatch active" style="background:#eeeeee" data-val="#eeeeee"></div>
+    <div class="theme-swatch" style="background:#4dd0e1" data-val="#4dd0e1"></div>
+    <div class="theme-swatch" style="background:#69f07a" data-val="#69f07a"></div>
+    <div class="theme-swatch" style="background:#ffd54f" data-val="#ffd54f"></div>
+    <div class="theme-swatch" style="background:#ce93d8" data-val="#ce93d8"></div>
+    <div class="theme-swatch" style="background:#ff8a65" data-val="#ff8a65"></div>
+    <div class="theme-swatch" style="background:#80cbc4" data-val="#80cbc4"></div>
+    <div class="theme-swatch" style="background:#f48fb1" data-val="#f48fb1"></div>
+  </div>
+
+  <div class="theme-section-label">Called number highlight</div>
+  <div class="theme-swatches" id="swCalled">
+    <div class="theme-swatch active" style="background:#ff4d4d" data-val="#ff4d4d"></div>
+    <div class="theme-swatch" style="background:#4dd0e1" data-val="#4dd0e1"></div>
+    <div class="theme-swatch" style="background:#69f07a" data-val="#69f07a"></div>
+    <div class="theme-swatch" style="background:#ffd54f" data-val="#ffd54f"></div>
+    <div class="theme-swatch" style="background:#ce93d8" data-val="#ce93d8"></div>
+    <div class="theme-swatch" style="background:#ff8a65" data-val="#ff8a65"></div>
+    <div class="theme-swatch" style="background:#80cbc4" data-val="#80cbc4"></div>
+    <div class="theme-swatch" style="background:#f48fb1" data-val="#f48fb1"></div>
+  </div>
+
+  <div class="theme-section-label">Card number colour</div>
+  <div class="theme-swatches" id="swTitle">
+    <div class="theme-swatch active" style="background:#ff6666" data-val="#ff6666"></div>
+    <div class="theme-swatch" style="background:#4dd0e1" data-val="#4dd0e1"></div>
+    <div class="theme-swatch" style="background:#69f07a" data-val="#69f07a"></div>
+    <div class="theme-swatch" style="background:#ffd54f" data-val="#ffd54f"></div>
+    <div class="theme-swatch" style="background:#ce93d8" data-val="#ce93d8"></div>
+    <div class="theme-swatch" style="background:#ff8a65" data-val="#ff8a65"></div>
+    <div class="theme-swatch" style="background:#80cbc4" data-val="#80cbc4"></div>
+    <div class="theme-swatch" style="background:#f48fb1" data-val="#f48fb1"></div>
+  </div>
+
+  <div class="theme-section-label">Card select flash colour</div>
+  <div class="theme-swatches" id="swFlash">
+    <div class="theme-swatch active" style="background:#ffeb3b" data-val="#ffeb3b"></div>
+    <div class="theme-swatch" style="background:#ff4d4d" data-val="#ff4d4d"></div>
+    <div class="theme-swatch" style="background:#4dd0e1" data-val="#4dd0e1"></div>
+    <div class="theme-swatch" style="background:#69f07a" data-val="#69f07a"></div>
+    <div class="theme-swatch" style="background:#ce93d8" data-val="#ce93d8"></div>
+    <div class="theme-swatch" style="background:#ff8a65" data-val="#ff8a65"></div>
+    <div class="theme-swatch" style="background:#80cbc4" data-val="#80cbc4"></div>
+    <div class="theme-swatch" style="background:#f48fb1" data-val="#f48fb1"></div>
+  </div>
+  
+  
+  <!-- IAP section — populated by iap-manager.js for Full+Ads builds only -->
+  <div id="iapSection" style="display:none; padding:8px 0 4px;">
+    <button id="removeAdsBtn" style="width:100%;padding:10px;margin-bottom:6px;background:#1a1a1a;border:1px solid #444;color:#eee;border-radius:8px;font-size:14px;cursor:pointer;">Remove Ads</button>
+    <button id="restorePurchasesBtn" style="width:100%;padding:8px;background:none;border:1px solid #333;color:#888;border-radius:8px;font-size:12px;cursor:pointer;">Restore Purchase</button>
+  </div>
+</div>
+</div>
+
+<!-- Card selection area -->
+<div id="cardSelectionWrapper" style="display:none;">
+  <div><span id="pickPromptLabel">Pick up to 3 cards:</span></div>
+  <div id="totalCardsLabel">Total Cards: 0</div>
+
+  <div class="toggle-row" id="bigCardToggleRow">
+    <label class="switch" for="bigCardToggle">
+      <input type="checkbox" id="bigCardToggle">
+      <span class="slider"></span>
+    </label>
+    <label for="bigCardToggle" id="bigCardModeLabel" style="font-size:13px;color:#aaa;cursor:pointer;">Big Card Mode</label>
+    <span id="bigCardToggleHint" style="display:none;font-size:11px;color:#ff8a65;margin-left:6px;"></span>
+  </div>
+  <div id="bigCardModeHint" class="selection-toggle-hint" style="display:none;">Screen will switch to landscape rotation when your card selection is confirmed.</div>
+
+  <div class="random-pick-container" id="randomPickContainer">
+    <div id="quickPickLabel">Quick Pick Random Cards:</div>
+    <div class="quick-buttons">
+      <button class="quick-pick-btn" id="clearSelectionBtn" data-count="0" title="Reset selection">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="display:block;"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+      </button>
+      <button class="quick-pick-btn" data-count="1">1</button>
+      <button class="quick-pick-btn enabled-glow" data-count="2">2</button>
+      <button class="quick-pick-btn enabled-glow" data-count="3">3</button>
+    </div>
+  </div>
+
+  <div class="share-code-row">
+    <span class="share-code-label" id="shareCodeLabel">Your share<br>code</span>
+    <span id="shareCodeDisplay" class="share-code-pill share-code-empty">–</span>
+    <button id="shareQrBtn" class="share-qr-btn" title="Show QR code" disabled>
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="display:block;">
+        <rect x="2" y="2" width="8" height="8" rx="1"/>
+        <rect x="14" y="2" width="8" height="8" rx="1"/>
+        <rect x="2" y="14" width="8" height="8" rx="1"/>
+        <rect x="16" y="16" width="6" height="6" rx="1" fill="currentColor" stroke="none"/>
+      </svg>
+    </button>
+  </div>
+  <div class="share-code-copy-hint">Tap to copy — give this to your caller</div>
+
+  <div class="toggle-row">
+    <label class="switch" for="advancedToggle">
+      <input type="checkbox" id="advancedToggle">
+      <span class="slider"></span>
+    </label>
+    <label for="advancedToggle" id="advancedSelectionLabel" style="font-size:13px;color:#aaa;cursor:pointer;">Advanced Selection</label>
+  </div>
+  <div id="advancedSelectionHint" class="selection-toggle-hint" style="display:none;">Shared number count between cards is shown on the right of each card.</div>
+
+  <div id="searchWrapper">
+    <div class="search-wrapper">
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="Search card code"
+        aria-label="Search card by code"
+        inputmode="numeric"
+        pattern="\d*"
+        maxlength="4"
+      />
+      <button id="clearSearchBtn" title="Clear search">✖</button>
+    </div>
+  </div>
+
+  <div id="cardList"></div>
+
+  <div id="randomWarning">
+    <span aria-hidden="true">⚠️</span> Please check with other players to ensure your cards are unique.
+  </div>
+
+  <button id="confirmSelectionBtn">Confirm Selection</button>
+</div>
+
+<!-- Bingo cards display -->
+<div id="cardsWrapper"></div>
+<div id="doubleTapHint" class="double-tap-hint" style="display:none;">Double-tap to undo a marked number</div>
+
+<!-- BingoNingo win animation text — kept at body level for fixed overlay -->
+<!-- FIX 5: Added aria-live so screen readers announce the win -->
+<div id="bingoText" aria-live="polite" aria-atomic="true">BingoNingo!</div>
+
+<!-- Scripts at end of body — order matters: cards.js must load before playercard.js -->
+<link rel="stylesheet" href="help/help-popup.css?v=.0.0">
+<script src="help/help-content.js?v=.0.0" defer></script>
+<script src="help/help-popup.js?v=.0.0" defer></script>
+<script src="sharecode.js?v=.0.0" defer></script>
+<script src="version.js?v=.0.0" defer></script>
+<script src="capacitor.js" defer></script>
+<script src="admob-manager.js?v=.0.0" defer></script>
+<script src="iap-manager.js?v=.0.0" defer></script>
+<script src="cards.js?v=.0.0" defer></script>
+<script src="theme-presets.js?v=.0.0" defer></script>
+<script src="theme-core.js?v=.0.0" defer></script>
+<script src="theme-loader.js?v=.0.0" defer></script>
+<script src="themes.js?v=.0.0" defer></script>
+<script src="cardindex.js?v=.0.0" defer></script>
+<script src="playercard.js?v=.0.0" defer></script>
+<script src="back-handler.js?v=.0.0" defer></script>
+
+<script>
+window.addEventListener('DOMContentLoaded', function () {
+  if (typeof initHelpSystem !== 'function') return;
+  initHelpSystem([
+    { id: 'newGameBtn',             key: 'player_new_game',           type: 'button' },
+    { id: 'endGameBtn',             key: 'player_end_game',           type: 'button' },
+    { id: 'qrBtn',                  key: 'player_qr_code',            type: 'button' },
+    { id: 'themeBtn',               key: 'player_theme',              type: 'button' },
+    { id: 'bigCardModeLabel',        key: 'player_big_card_mode',      type: 'label'  },
+    { id: 'quickPickLabel',         key: 'player_quick_pick',         type: 'label'  },
+    { id: 'shareCodeLabel',         key: 'player_share_code',         type: 'label'  },
+    { id: 'advancedSelectionLabel', key: 'player_advanced_selection', type: 'label'  },
+  ]);
+});
+</script>
+<div id="adsense-banner-container" style="position:fixed;bottom:0;left:0;width:100%;height:60px;background:#111;z-index:9000;display:flex;align-items:center;justify-content:center;"><ins class="adsbygoogle" style="display:inline-block;width:320px;height:50px" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="XXXXXXXXXX"></ins><script>try{(adsbygoogle=window.adsbygoogle||[]).push({});}catch(e){}</script></div></body>
+</html>

@@ -1,0 +1,197 @@
+/* ============================= */
+/* BingoNingo Changelog Popup    */
+/* ============================= */
+
+/* Overlay */
+#changelogOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 1000;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+#changelogOverlay.hidden {
+  display: none;
+}
+
+/* Popup panel */
+#changelogPopup {
+  background: #1e1e1e;
+  border: 1px solid #444;
+  border-bottom: none;
+  border-radius: 16px 16px 0 0;
+  width: 100%;
+  max-width: 480px;
+  max-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  animation: slideUp 0.25s ease;
+  padding-bottom: max(env(safe-area-inset-bottom), 16px);
+}
+
+@keyframes slideUp {
+  from { transform: translateY(60px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+/* Header */
+#changelogHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 18px 12px 18px;
+  border-bottom: 1px solid #333;
+  flex-shrink: 0;
+}
+
+#changelogHeader h2 {
+  margin: 0;
+  font-size: 16px;
+  color: #eee;
+  font-weight: 600;
+}
+
+#changelogVersionBadge {
+  font-size: 11px;
+  color: #888;
+  background: #2a2a2a;
+  border: 1px solid #444;
+  border-radius: 20px;
+  padding: 2px 9px;
+}
+
+/* Scrollable body */
+#changelogBody {
+  overflow-y: auto;
+  padding: 14px 18px;
+  flex: 1;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Individual item */
+.changelog-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 7px 0;
+  border-bottom: 1px solid #2a2a2a;
+  font-size: 13px;
+  color: #ccc;
+  line-height: 1.45;
+}
+
+.changelog-item:last-child {
+  border-bottom: none;
+}
+
+/* Tag badges */
+.changelog-tag {
+  flex-shrink: 0;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 2px 7px;
+  border-radius: 20px;
+  margin-top: 2px;
+  text-transform: uppercase;
+}
+
+.changelog-tag.new    { background: #1a3a1a; color: #5cb85c; border: 1px solid #2d5a2d; }
+.changelog-tag.fix    { background: #3a2a1a; color: #e6a020; border: 1px solid #5a3f10; }
+.changelog-tag.update { background: #1a2a3a; color: #5baee6; border: 1px solid #1d3f5a; }
+
+/* Free-edition section divider */
+.changelog-free-divider {
+  font-size: 11px;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 10px 0 4px 0;
+}
+
+/* Previous versions toggle */
+#changelogPrevious {
+  border-top: 1px solid #2a2a2a;
+  flex-shrink: 0;
+}
+
+#changelogPrevBtn {
+  width: 100%;
+  background: none;
+  border: none;
+  color: #666;
+  font-size: 12px;
+  padding: 10px 18px;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: color 0.2s;
+}
+
+#changelogPrevBtn:hover { color: #999; }
+
+#changelogPrevArrow {
+  font-size: 10px;
+  transition: transform 0.2s;
+  display: inline-block;
+}
+
+#changelogPrevBody {
+  max-height: 240px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  border-top: 1px solid #2a2a2a;
+}
+
+.changelog-prev-section {
+  padding: 8px 18px 4px;
+  border-bottom: 1px solid #1e1e1e;
+}
+
+.changelog-prev-section:last-child { border-bottom: none; }
+
+.changelog-prev-version {
+  font-size: 10px;
+  color: #555;
+  font-family: monospace;
+  letter-spacing: 0.04em;
+  margin-bottom: 4px;
+  padding-top: 2px;
+}
+
+.changelog-prev-section .changelog-item {
+  font-size: 12px;
+  padding: 4px 0;
+}
+
+.changelog-prev-section .changelog-tag {
+  font-size: 9px;
+  padding: 1px 6px;
+}
+
+/* Footer */
+#changelogFooter {
+  padding: 12px 18px 0 18px;
+  flex-shrink: 0;
+}
+
+#changelogGotItBtn {
+  width: 100%;
+  padding: 11px;
+  font-size: 15px;
+  background: #333;
+  color: #eee;
+  border: 1px solid #555;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+#changelogGotItBtn:hover {
+  background: #444;
+}
