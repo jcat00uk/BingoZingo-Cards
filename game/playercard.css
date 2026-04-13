@@ -1348,46 +1348,6 @@ body.big-card-active .big-card-share-code {
   padding: 8px 0 4px;
 }
 
-/* ============================= */
-/* WEB ADSENSE BANNER OFFSET     */
-/* body class injected by web    */
-/* build bat — never on Android  */
-/* ============================= */
-body.has-ad-banner .card td {
-  height: clamp(22px, calc((100svh - 410px) / 9), 50px);
-  width:  clamp(22px, calc((100svh - 410px) / 9), 50px);
-  font-size: 14px;
-}
-
-body.has-ad-banner .card {
-  max-width: 100%;
-}
-
-body.has-ad-banner #cardsWrapper {
-  padding-bottom: 65px;
-}
-
-body.has-ad-banner .version-label {
-  bottom: 70px !important;
-}
-
-body.has-ad-banner #cardsWrapper {
-  padding-bottom: 65px;
-}
-
-body.has-ad-banner.big-card-active #cardsWrapper {
-  padding-bottom: 65px;
-}
-
-/* Theme panel: stop at top of banner, fully scrollable above it */
-body.has-ad-banner #themePanelWrapper {
-  max-height: calc(100dvh - 130px);
-}
-
-/* QR / confirm modals: centre content in the visible area above banner */
-body.has-ad-banner .modal-overlay {
-  padding-bottom: 60px;
-}
 
 
 /* Cat pointing */
