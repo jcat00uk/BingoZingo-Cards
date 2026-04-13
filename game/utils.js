@@ -1,0 +1,1 @@
+function vibrate(a){navigator.vibrate&&navigator.vibrate(a)}

@@ -50,6 +50,16 @@
   </div>
 </div>
 
+<!-- Page theme collapsible -->
+<div class="how-it-works" id="pageThemeSection">
+  <button class="how-it-works-btn" id="pageThemeBtn" aria-expanded="false" aria-controls="pageThemeBody">
+    🎨 Page theme <span class="how-arrow">▼</span>
+  </button>
+  <div class="how-it-works-body" id="pageThemeBody" hidden>
+    <div id="simpleThemePicker"></div>
+  </div>
+</div>
+
 <div class="menu-buttons">
   <div class="menu-item" id="menuItemCaller">
     <button id="btnCaller">Bingo Caller</button>
@@ -67,8 +77,6 @@
   </div>
 </div>
 
-
-
 <!-- FIX 5: startmenu.js is now actually loaded -->
 <link rel="stylesheet" href="changelog-popup.css?v=.0.0">
 <link rel="stylesheet" href="help/help-popup.css?v=.0.0">
@@ -79,7 +87,9 @@
 <script src="iap-manager.js?v=.0.0"></script>
 <script src="back-handler.js?v=.0.0" defer></script>
 <script src="changelog.js?v=.0.0" defer></script>
-<script src="themes.js?v=.0.0" defer></script>
+<script src="theme-presets.js?v=.0.0" defer></script>
+<script src="theme-core.js?v=.0.0" defer></script>
+<script src="theme-picker-simple.js?v=.0.0" defer></script>
 <script src="startmenu.js?v=.0.0" defer></script>
 
 
