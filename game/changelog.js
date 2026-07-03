@@ -1,6 +1,6 @@
 window.CHANGELOG = {
 
-  '20260703-222434': {
+  '20260703-222647': {
     changes: [
       { tag: 'new', text: 'Added a Keep Screen On toggle to the player card theme panel', editions: 'all' },
       { tag: 'new', text: 'Added a voice picker and volume slider to Text-to-Speech settings', editions: 'full' },
