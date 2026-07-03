@@ -1,6 +1,15 @@
 window.CHANGELOG = {
 
-  '20260627-161627': {
+  '20260703-222434': {
+    changes: [
+      { tag: 'new', text: 'Added a Keep Screen On toggle to the player card theme panel', editions: 'all' },
+      { tag: 'new', text: 'Added a voice picker and volume slider to Text-to-Speech settings', editions: 'full' },
+      { tag: 'fix', text: 'Replaced a native "invalid card" alert popup with an in-app message', editions: 'full' },
+      { tag: 'new', text: 'Guided tutorial — a walkthrough highlights each control and sets up your first game on first run. Replay any time from ⓘ How it works or the i popover.', editions: 'all' }
+    ]
+  },
+
+  '20260703-1138': {
     changes: [
       { tag: 'update', text: 'Update How it works link and QR to point directly to the web cards game', editions: 'all' }
     ]
